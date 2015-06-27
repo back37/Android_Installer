@@ -22,7 +22,7 @@ namespace Android_Installer
             var boot = Environment.ExpandEnvironmentVariables(@"%SystemDrive%");
             DriveInfo Drive = new System.IO.DriveInfo(boot);
             double free = Drive.AvailableFreeSpace;
-            long size = 0;
+            long size = 1048576;
 
             if (File.Exists(boot + @"\Android\data.img"))
             {
@@ -98,10 +98,15 @@ namespace Android_Installer
 
             Process efi = new Process();
             StreamWriter BatFile2 = new StreamWriter(@"Bin\temp.bat", false, Encoding.GetEncoding(866));
-            BatFile2.WriteLine("cd \"" + Directory.GetCurrentDirectory() + "\\Bin\"");
-            BatFile2.WriteLine(@"tfile.exe data.img 1024");
-            BatFile2.WriteLine(@"mke2fs.exe -F data.img");
-            BatFile2.WriteLine(@"resize2fs.exe -p data.img " + (trackBar1.Value * 256));
+            BatFile2.WriteLine("chcp 1251");
+            BatFile2.WriteLine(@"echo %date% %time% >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+            BatFile2.WriteLine(@"echo Data Resize >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+            BatFile2.WriteLine(@"echo ----------------------------- >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+            BatFile2.WriteLine("cd \"" + Directory.GetCurrentDirectory() + @"\Bin"" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+            BatFile2.WriteLine(@"tfile.exe data.img 1024 >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+            BatFile2.WriteLine(@"mke2fs.exe -F data.img >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+            BatFile2.WriteLine(@"resize2fs.exe -p data.img " + (trackBar1.Value * 256) + @" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+            BatFile2.WriteLine(@"echo ----------------------------- >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
             BatFile2.WriteLine(@"del temp.bat");
             BatFile2.Close();
             efi.StartInfo.Verb = "runas";
