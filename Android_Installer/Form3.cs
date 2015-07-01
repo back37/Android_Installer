@@ -17,6 +17,7 @@ namespace Android_Installer
         Point last;
         string sys = "";
         string grub = "";
+        LogWriter lw = new LogWriter();
 
         public void CopyDirectory(string strSource, string strDestination)
         {
@@ -81,12 +82,15 @@ namespace Android_Installer
 
         private void button2_Click(object sender, EventArgs e)
         {
+            string[] s = { "", "Android install canceled" };
+            lw.Write(s);
+
             Close();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var boot = Environment.ExpandEnvironmentVariables(@"%SystemDrive%");
+            try {var boot = Environment.ExpandEnvironmentVariables(@"%SystemDrive%");
             if (Directory.Exists(boot + @"\android"))
             {
                 var dir = new DirectoryInfo(boot);
@@ -98,24 +102,6 @@ namespace Android_Installer
             }
 
             string p = "";
-
-            Process pc = new Process();
-            StreamWriter BatFile1 = new StreamWriter(@"Bin\1.bat", false, Encoding.GetEncoding(866));
-            BatFile1.WriteLine("chcp 1251");
-            BatFile1.WriteLine(@"echo %date% %time% >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-            BatFile1.WriteLine(@"echo Disable Bitlocker >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-            BatFile1.WriteLine(@"echo ----------------------------- >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-            BatFile1.WriteLine(@"cd %WINDIR%\System32");
-            BatFile1.WriteLine(@"cscript manage-bde.wsf >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-            BatFile1.WriteLine(@"manage-bde -off " + boot + @" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-            BatFile1.WriteLine(@"echo ----------------------------- >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-            BatFile1.WriteLine(@"del Bin\1.bat");
-            BatFile1.Close();
-            pc.StartInfo.Verb = "runas";
-            pc.StartInfo.FileName = @"Bin\1.bat";
-            pc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            pc.Start();
-            pc.WaitForExit();
 
             if (Directory.Exists(boot + @"\EFI"))
             {
@@ -153,6 +139,25 @@ namespace Android_Installer
 
             if (radioButton1.Checked)
             {
+                string[] s = { "Full install", "-----------------------------" };
+                lw.Write(s);
+
+                Process pc = new Process();
+                StreamWriter BatFile1 = new StreamWriter(@"Bin\1.bat", false, Encoding.GetEncoding(866));
+                BatFile1.WriteLine("chcp 1251");
+                BatFile1.WriteLine(@"echo Disable Bitlocker >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                BatFile1.WriteLine(@"echo ----------------------------- >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                BatFile1.WriteLine(@"cd %WINDIR%\System32");
+                BatFile1.WriteLine(@"cscript %WINDIR%\System32\manage-bde.wsf >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                BatFile1.WriteLine(@"manage-bde -off " + boot + @" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                BatFile1.WriteLine(@"echo ----------------------------- >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                BatFile1.WriteLine(@"del Bin\1.bat");
+                BatFile1.Close();
+                pc.StartInfo.Verb = "runas";
+                pc.StartInfo.FileName = @"Bin\1.bat";
+                pc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                pc.Start();
+                pc.WaitForExit();
 
                 if (Directory.Exists(boot + @"\android"))
                 {
@@ -182,11 +187,13 @@ namespace Android_Installer
                                 {
                                     file.Write(str);
                                 }
+
+                                string[] s1 = { ".cfg path: " + grub, "System name: " + sys, "" };
+                                lw.Write(s1);
                             }
                         }
                         else { MessageBox.Show("System not found"); return; }
                     }
-
                     CopyDirectory(Directory.GetCurrentDirectory() + @"\Android\Bootloader", p);
 
                     Process ef = new Process();
@@ -214,10 +221,15 @@ namespace Android_Installer
                 else { MessageBox.Show("OS not found"); return; }
 
                 MessageBox.Show("Success!");
+                string[] s3 = { "", "Install successful" };
+                lw.Write(s3);
                 Close();
             }
             else
             {
+                string[] s = { "Update", "-----------------------------" };
+                lw.Write(s);
+
                 if (Directory.Exists(p + @"\boot"))
                 {
                     var dir = new DirectoryInfo(p + @"\boot");
@@ -244,6 +256,9 @@ namespace Android_Installer
                                 {
                                     file.Write(str);
                                 }
+
+                                string[] s1 = { ".cfg path: " + grub, "System name: " + sys, "" };
+                                lw.Write(s1);
                             }
                         }
                     }
@@ -254,7 +269,16 @@ namespace Android_Installer
                 else { MessageBox.Show("OS not found"); return; }
 
                 MessageBox.Show("Success!");
+                string[] s3 = { "", "Update successful" };
+                lw.Write(s3);
                 Close();
+            }
+         }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error!\nMore: log.txt");
+                string[] s2 = { "", "Android install error", ex.ToString() };
+                lw.Write(s2);
             }
         }
     }
