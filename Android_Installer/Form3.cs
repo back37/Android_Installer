@@ -142,6 +142,9 @@ namespace Android_Installer
                 string[] s = { "Full install", "-----------------------------" };
                 lw.Write(s);
 
+                string n = @"rEFInd Boot Manager";
+                string pt = @"\EFI\refind\refind_ia32.efi";
+
                 Process pc = new Process();
                 StreamWriter BatFile1 = new StreamWriter(@"Bin\1.bat", false, Encoding.GetEncoding(866));
                 BatFile1.WriteLine("chcp 1251");
@@ -196,15 +199,20 @@ namespace Android_Installer
                     }
                     CopyDirectory(Directory.GetCurrentDirectory() + @"\Android\Bootloader", p);
 
+                    if (checkBox1.Checked)
+                    {
+                        n = textBox1.Text;
+                        pt = comboBox1.Text;
+                    }
                     Process ef = new Process();
                     StreamWriter BatFile3 = new StreamWriter(@"Bin\3.bat", false, Encoding.GetEncoding(866));
                     BatFile3.WriteLine("chcp 1251");
                     BatFile3.WriteLine(@"echo Install booltloader >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                     BatFile3.WriteLine(@"echo ----------------------------- >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                    BatFile3.WriteLine(@"echo Set path \EFI\refind\refind_ia32.efi >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                    BatFile3.WriteLine(@"bcdedit /set {bootmgr} path \EFI\refind\refind_ia32.efi >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                    BatFile3.WriteLine(@"echo Set description ""rEFInd Boot Manager"" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                    BatFile3.WriteLine(@"bcdedit /set {bootmgr} description ""rEFInd Boot Manager""" + @" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                    BatFile3.WriteLine(@"echo Set path " + pt + @" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                    BatFile3.WriteLine(@"bcdedit /set {bootmgr} path " + pt + @" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                    BatFile3.WriteLine(@"echo Set description """ + n + @""" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                    BatFile3.WriteLine(@"bcdedit /set {bootmgr} description """ + n + @"""" + @" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                     BatFile3.WriteLine(@"echo ----------------------------- >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                     BatFile3.WriteLine(@"del Bin\3.bat");
                     BatFile3.Close();
@@ -214,11 +222,25 @@ namespace Android_Installer
                     ef.Start();
                     ef.WaitForExit();
                 }
-                else { MessageBox.Show("Bootloader not found"); return; }
+                else
+                {
+                    MessageBox.Show("Bootloader not found"); 
+                    return;
+                    string[] s4 = { "", "Bootloader not found" };
+                    lw.Write(s4);
+                    Close();
+                }
 
                 if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS"))
                 { CopyDirectory(Directory.GetCurrentDirectory() + @"\Android\OS", boot + @"\Android"); }
-                else { MessageBox.Show("OS not found"); return; }
+                else
+                {
+                    MessageBox.Show("OS not found"); 
+                    return;
+                    string[] s4 = { "", "OS not found" };
+                    lw.Write(s4);
+                    Close();
+                }
 
                 MessageBox.Show("Success!");
                 string[] s3 = { "", "Install successful" };
@@ -280,6 +302,51 @@ namespace Android_Installer
                 string[] s2 = { "", "Android install error", ex.ToString() };
                 lw.Write(s2);
             }
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButton1.Checked)
+            {
+                checkBox1.Visible = true;
+                this.Height = 151;
+            }
+            else
+            {
+                checkBox1.Visible = false;
+                checkBox1.Checked = false;
+                this.Height = 131;
+            }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked)
+            {
+                this.Height = 235;
+                if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\Bootloader"))
+                {
+                    var dir1 = new DirectoryInfo(Directory.GetCurrentDirectory() + @"\Android\Bootloader");
+                    foreach (FileInfo file1 in dir1.GetFiles("*.efi", SearchOption.AllDirectories))
+                    {
+                        string str = file1.FullName;
+                        str = str.Replace(Directory.GetCurrentDirectory() + @"\Android\Bootloader", "");
+                        comboBox1.Items.Add(str);
+                        if (str.EndsWith("refind_ia32.efi"))
+                            comboBox1.SelectedItem = str;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Bootloader not found");
+                    return;
+                    string[] s4 = { "", "Bootloader not found" };
+                    lw.Write(s4);
+                    Close();
+                }
+            }
+            else
+                this.Height = 151;
         }
     }
 }
