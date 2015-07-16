@@ -61,7 +61,7 @@ namespace Android_Installer
             {
                 MessageBox.Show("Error!\nMore: log.txt");
                 trackBar1.Value = 1;
-                string[] s2 = { "", "Android delete error", ex.ToString() };
+                string[] s2 = { "", "Android delete error", ex.ToString(),"" };
                 lw.Write(s2);
             }
         }
@@ -73,7 +73,7 @@ namespace Android_Installer
 
         private void button3_Click(object sender, EventArgs e)
         {
-            string[] s = { "", "Android resize canceled" };
+            string[] s = { "Android resize canceled", "-----------------------------","" };
             lw.Write(s);
 
             Close();
@@ -130,12 +130,11 @@ namespace Android_Installer
                 StreamWriter BatFile2 = new StreamWriter(@"Bin\temp.bat", false, Encoding.GetEncoding(866));
                 BatFile2.WriteLine("chcp 1251");
                 BatFile2.WriteLine(@"echo Data Resize >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                BatFile2.WriteLine(@"echo ----------------------------- >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                 BatFile2.WriteLine("cd \"" + Directory.GetCurrentDirectory() + @"\Bin"" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                 BatFile2.WriteLine(@"tfile.exe data.img 1 >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                 BatFile2.WriteLine(@"mke2fs.exe -F data.img >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                 BatFile2.WriteLine(@"resize2fs.exe -p data.img " + (trackBar1.Value * 1024) + @" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                BatFile2.WriteLine(@"echo ----------------------------- >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                BatFile2.WriteLine(@"echo.>> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                 BatFile2.WriteLine(@"del temp.bat");
                 BatFile2.Close();
                 efi.StartInfo.Verb = "runas";
@@ -164,7 +163,7 @@ namespace Android_Installer
                 }
 
                 MessageBox.Show("Success!");
-                string[] s3 = { "", "Resize successful" };
+                string[] s3 = { "Resize successful", "-----------------------------","" };
                 lw.Write(s3);
 
                 Close();
@@ -172,7 +171,7 @@ namespace Android_Installer
             catch (Exception ex)
             {
                 MessageBox.Show("Error!\nMore: log.txt");
-                string[] s2 = { "", "Android install error", ex.ToString() };
+                string[] s2 = { "", "Android install error", ex.ToString(),"" };
                 lw.Write(s2);
             }
         }

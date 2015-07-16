@@ -17,18 +17,11 @@ namespace Android_Installer
         public Form1()
         {
             InitializeComponent();
-            if (File.Exists("log.txt"))
-                File.Delete("log.txt");
-
-
-            string[] s = { DateTime.Now.ToString("dd.MM.yy HH-mm-ss") + " Program Version: " + Application.ProductVersion, "-----------------------------", "Program started", "-----------------------------" };
-            lw.Write(s);
-            
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string[] s = { "", "Android Install", ":::::::::::::::::::::::::::::::" };
+            string[] s = { "Android Install", "-----------------------------" };
             lw.Write(s);
             Form3 f3 = new Form3();
             f3.ShowDialog();
@@ -67,7 +60,7 @@ namespace Android_Installer
 
         private void button2_Click(object sender, EventArgs e)
         {
-            string[] s = { "", "Data Reisze", ":::::::::::::::::::::::::::::::" };
+            string[] s = { "Data Reisze", "-----------------------------" };
             lw.Write(s);
             Form f1 = new Form2();
             f1.ShowDialog();
@@ -80,7 +73,7 @@ namespace Android_Installer
                 DialogResult result = MessageBox.Show("Are you sure want to delete Android?", "Attention!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    string[] s = { "", "Android delete", ":::::::::::::::::::::::::::::::", "Started" };
+                    string[] s = { "", "Android delete", "-----------------------------", "Started" };
                     lw.Write(s);
 
                     var boot = Environment.ExpandEnvironmentVariables(@"%SystemDrive%");
@@ -89,12 +82,10 @@ namespace Android_Installer
                     StreamWriter BatFile3 = new StreamWriter(@"Bin\3.bat", false, Encoding.GetEncoding(866));
                     BatFile3.WriteLine("chcp 1251");
                     BatFile3.WriteLine(@"echo Delete booltloader >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                    BatFile3.WriteLine(@"echo ----------------------------- >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                     BatFile3.WriteLine(@"echo Set path \EFI\Microsoft\Boot\bootmgfw.efi >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                     BatFile3.WriteLine(@"bcdedit /set {bootmgr} path \EFI\Microsoft\Boot\bootmgfw.efi >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                     BatFile3.WriteLine(@"echo Set description ""Windows Boot Manager"" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                     BatFile3.WriteLine(@"bcdedit /set {bootmgr} description ""Windows Boot Manager"" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                    BatFile3.WriteLine(@"echo ----------------------------- >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                     BatFile3.WriteLine(@"del Bin\3.bat");
                     BatFile3.Close();
                     ef.StartInfo.Verb = "runas";
@@ -119,15 +110,23 @@ namespace Android_Installer
             catch (Exception ex)
             {
                 MessageBox.Show("Error!\nMore: log.txt");
-                string[] s2 = { "", "Data resize error", ex.ToString() };
+                string[] s2 = { "", "Data resize error", ex.ToString(),"" };
                 lw.Write(s2);
             }
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            string[] s3 = { "", ":::::::::::::::::::::::::::::", "-----------------------------", "Program closed" };
+            string[] s3 = { "Program closed", "", "" };
             lw.Write(s3);
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            string[] s = { "Config editor", "-----------------------------" };
+            lw.Write(s);
+            Editor f4 = new Editor();
+            f4.ShowDialog();
         }
     }
 }
