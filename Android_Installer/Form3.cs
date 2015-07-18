@@ -181,12 +181,12 @@ namespace Android_Installer
                             {
                                 sys = file1.Name;
                                 string str = string.Empty;
-                                using (System.IO.StreamReader reader = System.IO.File.OpenText(grub))
+                                using (System.IO.StreamReader reader = new System.IO.StreamReader(grub, Encoding.ASCII, true))
                                 {
                                     str = reader.ReadToEnd();
                                 }
                                 str = str.Replace("system.img", sys).Replace("system.sfs", sys).Replace("/android", "/Android");
-                                using (System.IO.StreamWriter file = new System.IO.StreamWriter(grub))
+                                using (System.IO.StreamWriter file = new System.IO.StreamWriter(grub, false, Encoding.ASCII))
                                 {
                                     file.Write(str);
                                 }
