@@ -74,7 +74,7 @@ namespace Android_Installer
                 DialogResult result = MessageBox.Show("Are you sure want to delete Android?", "Attention!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    string[] s = { "", "Android delete", "-----------------------------" };
+                    string[] s = { "Android delete", "-----------------------------" };
                     lw.Write(s);
 
                     var boot = Environment.ExpandEnvironmentVariables(@"%SystemDrive%");
@@ -126,7 +126,7 @@ namespace Android_Installer
                     {
                         Directory.Delete(p + @"boot\grub", true);
 
-                        string[] s2 = { p + @"\boot\grub - deleted" };
+                        string[] s2 = { p + @"boot\grub - deleted" };
                         lw.Write(s2);
                     }
 
@@ -134,39 +134,39 @@ namespace Android_Installer
                     {
                         Directory.Delete(p + @"EFI\grub", true);
 
-                        string[] s4 = { p + @"\EFI\grub - deleted" };
+                        string[] s4 = { p + @"EFI\grub - deleted" };
                         lw.Write(s4);
                     }
                     if (Directory.Exists(p + @"EFI\refind"))
                     {
                         Directory.Delete(p + @"EFI\refind", true);
 
-                        string[] s5 = { p + @"\EFI\refind - deleted" };
+                        string[] s5 = { p + @"EFI\refind - deleted" };
                         lw.Write(s5);
                     }
                     if (Directory.Exists(p + @"EFI\tools"))
                     {
                         Directory.Delete(p + @"EFI\tools", true);
 
-                        string[] s6 = { p + @"\EFI\tools - deleted" };
+                        string[] s6 = { p + @"EFI\tools - deleted" };
                         lw.Write(s6);
                     }
 
-                    if (Directory.Exists(boot + @"\Android"))
+                    if (Directory.Exists(boot + @"Android"))
                     {
-                        Directory.Delete(boot + @"\Android", true);
+                        Directory.Delete(boot + @"Android", true);
 
-                        string[] s7 = { boot + @"\Android - deleted" };
+                        string[] s7 = { boot + @"Android - deleted" };
                         lw.Write(s7);
                     }
 
                     MessageBox.Show("Success!");
-                    string[] s3 = { "", "Delete successful" };
+                    string[] s3 = { "Delete successful", "-----------------------------", "" };
                     lw.Write(s3);
                 }
                 else
                 {
-                    string[] s = { "", "Android delete", "Canceled" };
+                    string[] s = { "Delete canceled", "-----------------------------", "" };
                     lw.Write(s);
                 }
             }

@@ -19,6 +19,7 @@ namespace Android_Installer
                         file.WriteLine(s[i]);
                     }
                 }
+
             }
         }
     }
