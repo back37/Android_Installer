@@ -321,7 +321,7 @@ namespace Android_Installer
                                 string[] s = { comboBox1.Items[c].ToString() + " - changes cancelled", };
                                 lw.Write(s);
 
-                                return;
+                                break;
                             }
                     }
                 }
