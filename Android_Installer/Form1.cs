@@ -74,7 +74,7 @@ namespace Android_Installer
                 DialogResult result = MessageBox.Show("Are you sure want to delete Android?", "Attention!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    string[] s = { "", "Android delete", "-----------------------------", "Started" };
+                    string[] s = { "", "Android delete", "-----------------------------" };
                     lw.Write(s);
 
                     var boot = Environment.ExpandEnvironmentVariables(@"%SystemDrive%");
@@ -105,7 +105,7 @@ namespace Android_Installer
                         StreamWriter BatFile2 = new StreamWriter(@"Bin\2.bat", false, Encoding.GetEncoding(866));
                         BatFile2.WriteLine("chcp 1251");
                         BatFile2.WriteLine(@"echo Try to mount S >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                        BatFile2.WriteLine(@"mountvol S: /S >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                        BatFile2.WriteLine(@"mountvol S: /S ");
                         BatFile2.WriteLine(@"dir S:\ >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                         BatFile2.WriteLine(@"echo.>> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                         BatFile2.WriteLine(@"del Bin\2.bat");
@@ -122,42 +122,42 @@ namespace Android_Installer
                         }
                     }
 
-                    if (Directory.Exists(p + @"\boot\grub"))
+                    if (Directory.Exists(p + @"boot\grub"))
                     {
-                        Directory.Delete(p + @"\boot\grub", true);
+                        Directory.Delete(p + @"boot\grub", true);
 
-                        string[] s1 = { p + @"\boot\grub - deleted" };
-                        lw.Write(s);
+                        string[] s2 = { p + @"\boot\grub - deleted" };
+                        lw.Write(s2);
                     }
 
-                    if (Directory.Exists(p + @"\EFI\grub"))
+                    if (Directory.Exists(p + @"EFI\grub"))
                     {
-                        Directory.Delete(p + @"\EFI\grub", true);
+                        Directory.Delete(p + @"EFI\grub", true);
 
-                        string[] s1 = { p + @"\EFI\grub - deleted" };
-                        lw.Write(s);
+                        string[] s4 = { p + @"\EFI\grub - deleted" };
+                        lw.Write(s4);
                     }
-                    if (Directory.Exists(p + @"\EFI\refind"))
+                    if (Directory.Exists(p + @"EFI\refind"))
                     {
-                        Directory.Delete(p + @"\EFI\refind", true);
+                        Directory.Delete(p + @"EFI\refind", true);
 
-                        string[] s1 = { p + @"\EFI\refind - deleted" };
-                        lw.Write(s);
+                        string[] s5 = { p + @"\EFI\refind - deleted" };
+                        lw.Write(s5);
                     }
-                    if (Directory.Exists(p + @"\EFI\tools"))
+                    if (Directory.Exists(p + @"EFI\tools"))
                     {
-                        Directory.Delete(p + @"\EFI\tools", true);
+                        Directory.Delete(p + @"EFI\tools", true);
 
-                        string[] s1 = { p + @"\EFI\tools - deleted" };
-                        lw.Write(s);
+                        string[] s6 = { p + @"\EFI\tools - deleted" };
+                        lw.Write(s6);
                     }
 
                     if (Directory.Exists(boot + @"\Android"))
                     {
                         Directory.Delete(boot + @"\Android", true);
 
-                        string[] s1 = { boot + @"\Android - deleted" };
-                        lw.Write(s);
+                        string[] s7 = { boot + @"\Android - deleted" };
+                        lw.Write(s7);
                     }
 
                     MessageBox.Show("Success!");

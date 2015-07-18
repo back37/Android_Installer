@@ -113,7 +113,7 @@ namespace Android_Installer
                 StreamWriter BatFile2 = new StreamWriter(@"Bin\2.bat", false, Encoding.GetEncoding(866));
                 BatFile2.WriteLine("chcp 1251");
                 BatFile2.WriteLine(@"echo Try to mount S >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                BatFile2.WriteLine(@"mountvol S: /S >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                BatFile2.WriteLine(@"mountvol S: /S ");
                 BatFile2.WriteLine(@"dir S:\ >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                 BatFile2.WriteLine(@"echo.>> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                 BatFile2.WriteLine(@"del Bin\2.bat");
@@ -134,6 +134,7 @@ namespace Android_Installer
                     string[] s4 = { "Error - EFI not found!", "-----------------------------", "" };
                     lw.Write(s4);
                     Close();
+                    return;
                 }
             }
 
@@ -201,8 +202,10 @@ namespace Android_Installer
                             string[] s4 = { "Error - System not found!", "-----------------------------", "" };
                             lw.Write(s4);
                             Close();
+                            return;
                         }
                     }
+
                     CopyDirectory(Directory.GetCurrentDirectory() + @"\Android\Bootloader", p);
 
                     if (checkBox1.Checked)
@@ -233,6 +236,7 @@ namespace Android_Installer
                     string[] s4 = { "Error - Bootloader not found!", "-----------------------------", "" };
                     lw.Write(s4);
                     Close();
+                    return;
                 }
 
                 if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS"))
@@ -243,12 +247,14 @@ namespace Android_Installer
                     string[] s4 = { "Error - OS not found!", "-----------------------------", "" };
                     lw.Write(s4);
                     Close();
+                    return;
                 }
 
                 MessageBox.Show("Success!");
                 string[] s3 = { "Install successful", "-----------------------------", "" };
                 lw.Write(s3);
                 Close();
+                return;
             }
             else
             {
@@ -351,6 +357,7 @@ namespace Android_Installer
                     string[] s4 = { "Error - Bootloader not found!", "-----------------------------", "" };
                     lw.Write(s4);
                     Close();
+                    return;
                 }
             }
             else

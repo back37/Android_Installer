@@ -36,7 +36,7 @@ namespace Android_Installer
                         StreamWriter BatFile2 = new StreamWriter(@"Bin\2.bat", false, Encoding.GetEncoding(866));
                         BatFile2.WriteLine("chcp 1251");
                         BatFile2.WriteLine(@"echo Try to mount S >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                        BatFile2.WriteLine(@"mountvol S: /S >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                        BatFile2.WriteLine(@"mountvol S: /S ");
                         BatFile2.WriteLine(@"dir S:\ >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                         BatFile2.WriteLine(@"echo.>> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                         BatFile2.WriteLine(@"del Bin\2.bat");
@@ -64,6 +64,7 @@ namespace Android_Installer
                                 string[] s4 = { "Bootloader not found","" };
                                 lw.Write(s4);
                                 Close();
+                                return;
                             }
                         }
                     }
@@ -81,6 +82,7 @@ namespace Android_Installer
                         string[] s4 = { "", "Bootloader not found" };
                         lw.Write(s4);
                         Close();
+                        return;
                     }
                 }
 
