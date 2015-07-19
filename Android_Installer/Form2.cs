@@ -49,6 +49,8 @@ namespace Android_Installer
                     {
                         string[] s = { "Data not exists" };
                         lw.Write(s);
+
+                        trackBar1.Value = 1024;
                     }
                 }
 
@@ -60,8 +62,7 @@ namespace Android_Installer
             catch (Exception ex)
             {
                 MessageBox.Show("Error!\nMore: log.txt");
-                trackBar1.Value = 1;
-                string[] s2 = { "", "Android delete error", ex.ToString(),"" };
+                string[] s2 = { "Data resize error", ex.ToString(),"" };
                 lw.Write(s2);
             }
         }

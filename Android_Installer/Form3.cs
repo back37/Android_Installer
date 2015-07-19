@@ -106,6 +106,8 @@ namespace Android_Installer
             if (Directory.Exists(boot + @"\EFI"))
             {
                 p = boot + @"\";
+                Directory.Move(boot + @"\Boot", boot + @"\BootS");
+                Directory.Move(boot + @"\BootS", boot + @"\boot");
             }
             else
             {
