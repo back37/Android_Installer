@@ -25,7 +25,7 @@ namespace Android_Installer
                 AppDomain.CurrentDomain.AppendPrivatePath(@"Bin");
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new Form1());
+                Application.Run(new Main());
             }
             else
             {

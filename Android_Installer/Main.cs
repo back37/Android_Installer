@@ -9,13 +9,13 @@ using System.Drawing;
 
 namespace Android_Installer
 {
-    public partial class Form1 : Form
+    public partial class Main : Form
     {
         Point last;
         LogWriter lw = new LogWriter();
         string p = "";
 
-        public Form1()
+        public Main()
         {
             InitializeComponent();
         }
@@ -24,7 +24,7 @@ namespace Android_Installer
         {
             string[] s = { "Android Install", "-----------------------------" };
             lw.Write(s);
-            Form3 f3 = new Form3();
+            Install f3 = new Install();
             f3.ShowDialog();
         }
 
@@ -63,7 +63,7 @@ namespace Android_Installer
         {
             string[] s = { "Data Reisze", "-----------------------------" };
             lw.Write(s);
-            Form f1 = new Form2();
+            Form f1 = new Resize();
             f1.ShowDialog();
         }
 
@@ -80,7 +80,7 @@ namespace Android_Installer
                     var boot = Environment.ExpandEnvironmentVariables(@"%SystemDrive%");
 
                     Process ef = new Process();
-                    StreamWriter BatFile3 = new StreamWriter(@"Bin\3.bat", false, Encoding.GetEncoding(866));
+                    StreamWriter BatFile3 = new StreamWriter(@"Bin\3.bat", false, Encoding.GetEncoding(1251));
                     BatFile3.WriteLine("chcp 1251");
                     BatFile3.WriteLine(@"echo Delete booltloader >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                     BatFile3.WriteLine(@"echo Set path \EFI\Microsoft\Boot\bootmgfw.efi >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
@@ -102,7 +102,7 @@ namespace Android_Installer
                     else
                     {
                         Process efi = new Process();
-                        StreamWriter BatFile2 = new StreamWriter(@"Bin\2.bat", false, Encoding.GetEncoding(866));
+                        StreamWriter BatFile2 = new StreamWriter(@"Bin\2.bat", false, Encoding.GetEncoding(1251));
                         BatFile2.WriteLine("chcp 1251");
                         BatFile2.WriteLine(@"echo Try to mount S >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                         BatFile2.WriteLine(@"mountvol S: /S ");

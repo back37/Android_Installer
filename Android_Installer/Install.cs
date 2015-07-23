@@ -11,7 +11,7 @@ using System.IO;
 
 namespace Android_Installer
 {
-    public partial class Form3 : Form
+    public partial class Install : Form
     {
 
         public void FindBoot()
@@ -52,7 +52,7 @@ namespace Android_Installer
         public void MountS()
         {
             Process efi = new Process();
-            StreamWriter BatFile2 = new StreamWriter(@"Bin\2.bat", false, Encoding.GetEncoding(866));
+            StreamWriter BatFile2 = new StreamWriter(@"Bin\2.bat", false, Encoding.GetEncoding(1251));
             BatFile2.WriteLine("chcp 1251");
             BatFile2.WriteLine(@"echo Try to mount S >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
             BatFile2.WriteLine(@"mountvol S: /S ");
@@ -91,7 +91,24 @@ namespace Android_Installer
                                 {
                                     str = reader.ReadToEnd();
                                 }
-                                str = str.Replace("system.img", sys).Replace("system.sfs", sys).Replace("/android", "/Android");
+                                if (File.Exists(Directory.GetCurrentDirectory() + @"\Android\OS\system.img") && File.Exists(Directory.GetCurrentDirectory() + @"\Android\OS\system.sfs"))
+                                {
+                                    DateTime D1 = File.GetLastWriteTime(Directory.GetCurrentDirectory() + @"\Android\OS\system.img");
+                                    DateTime D2 = File.GetLastWriteTime(Directory.GetCurrentDirectory() + @"\Android\OS\system.sfs");
+                                    if (D1 > D2)
+                                    {
+                                        sys = "system.sfs";
+                                        str = str.Replace("system.img", sys).Replace("/android", "/Android");
+                                    }
+                                    else
+                                    {
+                                        sys = "system.img";
+                                        str = str.Replace("system.sfs", sys).Replace("/android", "/Android");
+                                    }
+                                }
+                                else {
+                                    str = str.Replace("system.img", sys).Replace("system.sfs", sys).Replace("/android", "/Android");
+                                }
                                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(grub, false, Encoding.ASCII))
                                 {
                                     file.Write(str);
@@ -120,7 +137,7 @@ namespace Android_Installer
                     }
 
                     Process ef = new Process();
-                    StreamWriter BatFile3 = new StreamWriter(@"Bin\3.bat", false, Encoding.GetEncoding(866));
+                    StreamWriter BatFile3 = new StreamWriter(@"Bin\3.bat", false, Encoding.GetEncoding(1251));
                     BatFile3.WriteLine("chcp 1251");
                     BatFile3.WriteLine(@"echo Install booltloader >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                     BatFile3.WriteLine(@"echo Set path " + pt + @" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
@@ -188,7 +205,7 @@ namespace Android_Installer
 
         }
 
-        public Form3()
+        public Install()
         {
             InitializeComponent();
 
@@ -254,7 +271,7 @@ namespace Android_Installer
                     lw.Write(s);
 
                     Process pc = new Process();
-                    StreamWriter BatFile1 = new StreamWriter(@"Bin\1.bat", false, Encoding.GetEncoding(866));
+                    StreamWriter BatFile1 = new StreamWriter(@"Bin\1.bat", false, Encoding.GetEncoding(1251));
                     BatFile1.WriteLine("chcp 1251");
                     BatFile1.WriteLine(@"echo Disable Bitlocker >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                     BatFile1.WriteLine(@"cd %WINDIR%\System32");

@@ -1,6 +1,6 @@
 ﻿namespace Android_Installer
 {
-    partial class Form3
+    partial class Install
     {
         /// <summary>
         /// Required designer variable.

@@ -33,7 +33,7 @@ namespace Android_Installer
                     else
                     {
                         Process efi = new Process();
-                        StreamWriter BatFile2 = new StreamWriter(@"Bin\2.bat", false, Encoding.GetEncoding(866));
+                        StreamWriter BatFile2 = new StreamWriter(@"Bin\2.bat", false, Encoding.GetEncoding(1251));
                         BatFile2.WriteLine("chcp 1251");
                         BatFile2.WriteLine(@"echo Try to mount S >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                         BatFile2.WriteLine(@"mountvol S: /S ");

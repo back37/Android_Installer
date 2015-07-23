@@ -11,12 +11,12 @@ using System.Diagnostics;
 
 namespace Android_Installer
 {
-    public partial class Form2 : Form
+    public partial class Resize : Form
     {
         Point last;
         LogWriter lw = new LogWriter();
 
-        public Form2()
+        public Resize()
         {
             try
             {
@@ -49,8 +49,7 @@ namespace Android_Installer
                     {
                         string[] s = { "Data not exists" };
                         lw.Write(s);
-
-                        trackBar1.Value = 1024;
+                        size = 1073741824;
                     }
                 }
 
@@ -128,7 +127,7 @@ namespace Android_Installer
                 lw.Write(s);
 
                 Process efi = new Process();
-                StreamWriter BatFile2 = new StreamWriter(@"Bin\temp.bat", false, Encoding.GetEncoding(866));
+                StreamWriter BatFile2 = new StreamWriter(@"Bin\temp.bat", false, Encoding.GetEncoding(1251));
                 BatFile2.WriteLine("chcp 1251");
                 BatFile2.WriteLine(@"echo Data Resize >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                 BatFile2.WriteLine("cd \"" + Directory.GetCurrentDirectory() + @"\Bin"" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
@@ -172,7 +171,7 @@ namespace Android_Installer
             catch (Exception ex)
             {
                 MessageBox.Show("Error!\nMore: log.txt");
-                string[] s2 = { "", "Android install error", ex.ToString(),"" };
+                string[] s2 = { "Data resize error", ex.ToString(), "" };
                 lw.Write(s2);
             }
         }
