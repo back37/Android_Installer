@@ -67,7 +67,7 @@ namespace Android_Installer
             efi.WaitForExit();
         }
 
-        public void instBoot()
+        public void instBoot(string path)
         {
             try {
                 string n = @"rEFInd Boot Manager";
@@ -80,9 +80,9 @@ namespace Android_Installer
                     {
                         grub = file0.FullName;
 
-                        if (File.Exists(Directory.GetCurrentDirectory() + @"\Android\OS\system.img") || File.Exists(Directory.GetCurrentDirectory() + @"\Android\OS\system.sfs"))
+                        if (File.Exists(path + @"\system.img") || File.Exists(path + @"\system.sfs"))
                         {
-                            var dir1 = new DirectoryInfo(Directory.GetCurrentDirectory() + @"\Android\OS");
+                            var dir1 = new DirectoryInfo(path);
                             foreach (FileInfo file1 in dir1.GetFiles("system*", SearchOption.AllDirectories))
                             {
                                 sys = file1.Name;
@@ -91,10 +91,10 @@ namespace Android_Installer
                                 {
                                     str = reader.ReadToEnd();
                                 }
-                                if (File.Exists(Directory.GetCurrentDirectory() + @"\Android\OS\system.img") && File.Exists(Directory.GetCurrentDirectory() + @"\Android\OS\system.sfs"))
+                                if (File.Exists(path + @"\system.img") && File.Exists(path + @"\system.sfs"))
                                 {
-                                    DateTime D1 = File.GetLastWriteTime(Directory.GetCurrentDirectory() + @"\Android\OS\system.img");
-                                    DateTime D2 = File.GetLastWriteTime(Directory.GetCurrentDirectory() + @"\Android\OS\system.sfs");
+                                    DateTime D1 = File.GetLastWriteTime(path + @"\system.img");
+                                    DateTime D2 = File.GetLastWriteTime(path + @"\system.sfs");
                                     if (D1 > D2)
                                     {
                                         sys = "system.sfs";
@@ -290,11 +290,11 @@ namespace Android_Installer
                     {
                         Directory.Delete(boot + @"\android", true);
                     }
+                    string ph = Directory.GetCurrentDirectory() + @"\Android\OS";
+                    instBoot(ph);
 
-                    instBoot();
-
-                    if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS"))
-                    { CopyDirectory(Directory.GetCurrentDirectory() + @"\Android\OS", boot + @"\Android"); }
+                    if (Directory.Exists(ph))
+                    { CopyDirectory(ph, boot + @"\Android"); }
                     else
                     {
                         MessageBox.Show("Error - OS not found!");
@@ -371,7 +371,8 @@ namespace Android_Installer
                         string[] s = { "Update bootloader", "" };
                         lw.Write(s);
 
-                        instBoot();
+                        string ph = boot + @"\Android";
+                        instBoot(ph);
 
                         MessageBox.Show("Success!");
                         string[] s3 = { "Update successful", "-----------------------------", "" };
