@@ -128,7 +128,7 @@ namespace Android_Installer
                         }
                     }
 
-                    CopyDirectory(Directory.GetCurrentDirectory() + @"\Android\Bootloader", p);
+                    CopyDirectory(Directory.GetCurrentDirectory() + @"\Android\Bootloader", p,true);
 
                     if (checkBox1.Checked)
                     {
@@ -165,7 +165,7 @@ namespace Android_Installer
             catch (Exception ex)
             {
                 MessageBox.Show("Error!\nMore: log.txt");
-                string[] s2 = { "Android install error", ex.ToString(), "" };
+                string[] s2 = { "Android install error", ex.ToString(), "-----------------------------", "" };
                 lw.Write(s2);
             }
         }
@@ -177,7 +177,7 @@ namespace Android_Installer
         string p = "";
         LogWriter lw = new LogWriter();
 
-        public void CopyDirectory(string strSource, string strDestination)
+        public void CopyDirectory(string strSource, string strDestination, bool ch)
         {
             if (!Directory.Exists(strDestination))
             {
@@ -187,20 +187,37 @@ namespace Android_Installer
             FileInfo[] files = dirInfo.GetFiles();
             foreach (FileInfo tempfile in files)
             {
-                if (File.Exists(strDestination + "\\" + tempfile.Name) == false)
+                if (ch == false)
                 {
-                    tempfile.CopyTo(Path.Combine(strDestination, tempfile.Name));
+                    if (tempfile.Name.EndsWith("data.img") == false)
+                    {
+                        if (File.Exists(strDestination + "\\" + tempfile.Name) == false)
+                        {
+                            tempfile.CopyTo(Path.Combine(strDestination, tempfile.Name));
+                        }
+                        else
+                        {
+                            File.Delete(strDestination + "\\" + tempfile.Name);
+                            tempfile.CopyTo(Path.Combine(strDestination, tempfile.Name));
+                        }
+                    }
                 }
-                else
-                {
-                    File.Delete(strDestination + "\\" + tempfile.Name);
-                    tempfile.CopyTo(Path.Combine(strDestination, tempfile.Name));
+                else {
+                    if (File.Exists(strDestination + "\\" + tempfile.Name) == false)
+                    {
+                        tempfile.CopyTo(Path.Combine(strDestination, tempfile.Name));
+                    }
+                    else
+                    {
+                        File.Delete(strDestination + "\\" + tempfile.Name);
+                        tempfile.CopyTo(Path.Combine(strDestination, tempfile.Name));
+                    }
                 }
             }
             DirectoryInfo[] dirctororys = dirInfo.GetDirectories();
             foreach (DirectoryInfo tempdir in dirctororys)
             {
-                CopyDirectory(Path.Combine(strSource, tempdir.Name), Path.Combine(strDestination, tempdir.Name));
+                CopyDirectory(Path.Combine(strSource, tempdir.Name), Path.Combine(strDestination, tempdir.Name), ch);
             }
 
         }
@@ -294,7 +311,7 @@ namespace Android_Installer
                     instBoot(ph);
 
                     if (Directory.Exists(ph))
-                    { CopyDirectory(ph, boot + @"\Android"); }
+                    { CopyDirectory(ph, boot + @"\Android",true); }
                     else
                     {
                         MessageBox.Show("Error - OS not found!");
@@ -352,7 +369,7 @@ namespace Android_Installer
                         }
 
                         if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS"))
-                        { CopyDirectory(Directory.GetCurrentDirectory() + @"\Android\OS", boot + @"\Android"); }
+                        { CopyDirectory(Directory.GetCurrentDirectory() + @"\Android\OS", boot + @"\Android",checkBox2.Checked); }
                         else
                         {
                             MessageBox.Show("Error - OS not found!");
@@ -384,8 +401,9 @@ namespace Android_Installer
             catch (Exception ex)
             {
                 MessageBox.Show("Error!\nMore: log.txt");
-                string[] s2 = { "Android install error", ex.ToString(),"" };
+                string[] s2 = { "Android install error", ex.ToString(), "-----------------------------", "" };
                 lw.Write(s2);
+                Close();
             }
         }
 
@@ -394,13 +412,16 @@ namespace Android_Installer
             if (radioButton1.Checked || radioButton3.Checked)
             {
                 checkBox1.Visible = true;
+                checkBox2.Visible = false;
+                checkBox2.Checked = true;
                 this.Height = 181;
             }
             else
             {
                 checkBox1.Visible = false;
                 checkBox1.Checked = false;
-                this.Height = 161;
+                checkBox2.Visible = true;
+                checkBox2.Checked = true;
             }
         }
 

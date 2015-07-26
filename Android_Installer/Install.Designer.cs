@@ -31,6 +31,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -39,7 +41,6 @@
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -80,6 +81,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkBox2);
             this.groupBox1.Controls.Add(this.radioButton3);
             this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Controls.Add(this.label2);
@@ -94,6 +96,34 @@
             this.groupBox1.Size = new System.Drawing.Size(230, 134);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox2.Checked = true;
+            this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.checkBox2.Location = new System.Drawing.Point(132, 114);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(92, 17);
+            this.checkBox2.TabIndex = 5;
+            this.checkBox2.Text = "Replace Data";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.Visible = false;
+            // 
+            // radioButton3
+            // 
+            this.radioButton3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
+            this.radioButton3.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.radioButton3.Location = new System.Drawing.Point(20, 81);
+            this.radioButton3.Name = "radioButton3";
+            this.radioButton3.Size = new System.Drawing.Size(188, 26);
+            this.radioButton3.TabIndex = 8;
+            this.radioButton3.Text = "Update Bootloader";
+            this.radioButton3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.radioButton3.UseVisualStyleBackColor = true;
+            this.radioButton3.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
             // textBox1
             // 
@@ -185,19 +215,7 @@
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             // 
-            // radioButton3
-            // 
-            this.radioButton3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.radioButton3.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.radioButton3.Location = new System.Drawing.Point(20, 81);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(188, 26);
-            this.radioButton3.TabIndex = 8;
-            this.radioButton3.Text = "Update Bootloader";
-            this.radioButton3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.radioButton3.UseVisualStyleBackColor = true;
-            // 
-            // Form3
+            // Install
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -206,7 +224,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "Form3";
+            this.Name = "Install";
             this.ShowInTaskbar = false;
             this.Text = "Form3";
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
@@ -232,5 +250,6 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.RadioButton radioButton3;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }

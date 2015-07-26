@@ -173,8 +173,9 @@ namespace Android_Installer
             catch (Exception ex)
             {
                 MessageBox.Show("Error!\nMore: log.txt");
-                string[] s2 = { "", "Data resize error", ex.ToString(),"" };
+                string[] s2 = { "", "Data resize error", ex.ToString(), "-----------------------------", "" };
                 lw.Write(s2);
+                Close();
             }
         }
 

@@ -77,9 +77,8 @@ namespace Android_Installer
                     }
                     else
                     {
-                        MessageBox.Show("Bootloader not found");
-                        return;
-                        string[] s4 = { "", "Bootloader not found" };
+                        MessageBox.Show("Error - Bootloader not found!");
+                        string[] s4 = { "Error - Bootloader not found!", "-----------------------------", "" };
                         lw.Write(s4);
                         Close();
                         return;
@@ -119,7 +118,7 @@ namespace Android_Installer
             catch (Exception ex)
             {
                 MessageBox.Show("Error!\nMore: log.txt");
-                string[] s2 = { "", "Config editor error", ex.ToString(), "" };
+                string[] s2 = { "Config editor error", ex.ToString(), "-----------------------------", "" };
                 lw.Write(s2);
                 Close();
             }
@@ -343,7 +342,7 @@ namespace Android_Installer
             catch (Exception ex)
             {
                 MessageBox.Show("Error!\nMore: log.txt");
-                string[] s2 = { "", "Config editor error", ex.ToString(),"" };
+                string[] s2 = { "", "Config editor error", ex.ToString(), "-----------------------------", "" };
                 lw.Write(s2);
                 Close();
             }
