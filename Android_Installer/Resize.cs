@@ -15,6 +15,7 @@ namespace Android_Installer
     {
         Point last;
         LogWriter lw = new LogWriter();
+        int tb = 0;
 
         public Resize()
         {
@@ -53,8 +54,12 @@ namespace Android_Installer
                     }
                 }
 
-                trackBar1.Maximum = Convert.ToInt32((free / 1024 / 1024) + (Convert.ToDouble(size) / 1024 / 1024) - 512);
-                trackBar1.Value = Convert.ToInt32(Convert.ToDouble(size) / 1024 / 1024);
+                int sz = Convert.ToInt32(Convert.ToDouble(size) / 1024 / 1024);
+                if (sz < 1)
+                    sz = 1;
+
+                trackBar1.Maximum = Convert.ToInt32((free / 1024 / 1024) + sz - 512);
+                trackBar1.Value = sz;
                 label1.Text = "Data size: " + trackBar1.Value + " mb";
                 trackBar1.TickFrequency = trackBar1.Maximum / 10;
             }
@@ -69,6 +74,7 @@ namespace Android_Installer
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             label1.Text = "Data size: " + trackBar1.Value + " mb";
+            tb = trackBar1.Value;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -123,26 +129,50 @@ namespace Android_Installer
                     }
                 }
 
-                string[] s = { "Set size", (trackBar1.Value * 256).ToString(), "" };
+                string[] s = { "Set size", trackBar1.Value.ToString() + " mb", "" };
                 lw.Write(s);
+                if (radioButton1.Checked)
+                {
+                    Process efi = new Process();
+                    StreamWriter BatFile2 = new StreamWriter(@"Bin\temp.bat", false, Encoding.GetEncoding(1251));
+                    BatFile2.WriteLine("chcp 1251");
+                    BatFile2.WriteLine(@"echo Data Resize >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                    BatFile2.WriteLine("cd \"" + Directory.GetCurrentDirectory() + @"\Bin"" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                    BatFile2.WriteLine(@"tfile.exe data.img 1 >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                    BatFile2.WriteLine(@"mke2fs.exe -F data.img >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                    BatFile2.WriteLine(@"resize2fs.exe -p data.img " + (trackBar1.Value) * 1024 + @" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                    BatFile2.WriteLine(@"echo.>> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                    BatFile2.WriteLine(@"del temp.bat");
+                    BatFile2.Close();
+                    efi.StartInfo.Verb = "runas";
+                    efi.StartInfo.FileName = @"Bin\temp.bat";
+                    efi.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    efi.Start();
+                    efi.WaitForExit();
+                }
+                else
+                {
+                    Process efi = new Process();
+                    string str = string.Empty;
+                    using (System.IO.StreamReader reader = new System.IO.StreamReader(@"Bin\CreateEXT4.bat", true))
+                    {
+                        str = reader.ReadToEnd();
+                    }
+                    double ds = tb * 1024 * 1024;
+                    ds = Convert.ToDouble(ds.ToString().Replace("-", ""));
+                    str = str.Replace("size", ds.ToString()).Replace("path", "\"" + Directory.GetCurrentDirectory() + @"\log.txt""");
 
-                Process efi = new Process();
-                StreamWriter BatFile2 = new StreamWriter(@"Bin\temp.bat", false, Encoding.GetEncoding(1251));
-                BatFile2.WriteLine("chcp 1251");
-                BatFile2.WriteLine(@"echo Data Resize >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                BatFile2.WriteLine("cd \"" + Directory.GetCurrentDirectory() + @"\Bin"" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                BatFile2.WriteLine(@"tfile.exe data.img 1 >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                BatFile2.WriteLine(@"mke2fs.exe -F data.img >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                BatFile2.WriteLine(@"resize2fs.exe -p data.img " + (trackBar1.Value * 1024) + @" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                BatFile2.WriteLine(@"echo.>> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                BatFile2.WriteLine(@"del temp.bat");
-                BatFile2.Close();
-                efi.StartInfo.Verb = "runas";
-                efi.StartInfo.FileName = @"Bin\temp.bat";
-                efi.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                efi.Start();
-                efi.WaitForExit();
-
+                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"Bin\temp.bat", false))
+                    {
+                        file.Write(str);
+                    }
+                    efi.StartInfo.Verb = "runas";
+                    efi.StartInfo.FileName = @"Bin\temp.bat";
+                    efi.StartInfo.Arguments = @"data";
+                    efi.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    efi.Start();
+                    efi.WaitForExit();
+                }
                 if (Directory.Exists(boot + @"\Android"))
                 {
                     File.Move(Directory.GetCurrentDirectory() + @"\Bin\data.img", boot + @"\Android\data.img");
