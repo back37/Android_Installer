@@ -15,7 +15,7 @@ namespace Android_Installer
     {
         Point last;
         LogWriter lw = new LogWriter();
-        int tb = 0;
+        long tb = 0;
 
         public Resize()
         {
@@ -179,8 +179,8 @@ namespace Android_Installer
                     {
                         str = reader.ReadToEnd();
                     }
-                    double ds = tb * 1024 * 1024;
-                    ds = Convert.ToDouble(ds.ToString().Replace("-", ""));
+                    long ds = tb * 1024 * 1024;
+                    ds = Convert.ToInt64(ds.ToString().Replace("-", ""));
                     string rs = "";
                     if (Directory.Exists(boot + @"\Android"))
                     {

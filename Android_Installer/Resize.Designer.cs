@@ -116,24 +116,24 @@
             // radioButton1
             // 
             this.radioButton1.AutoSize = true;
-            this.radioButton1.Checked = true;
             this.radioButton1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.radioButton1.Location = new System.Drawing.Point(16, 31);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(69, 17);
             this.radioButton1.TabIndex = 8;
-            this.radioButton1.TabStop = true;
             this.radioButton1.Text = "Ext3 (KK)";
             this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
+            this.radioButton2.Checked = true;
             this.radioButton2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.radioButton2.Location = new System.Drawing.Point(88, 31);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(68, 17);
             this.radioButton2.TabIndex = 9;
+            this.radioButton2.TabStop = true;
             this.radioButton2.Text = "Ext4 (LP)";
             this.radioButton2.UseVisualStyleBackColor = true;
             // 
