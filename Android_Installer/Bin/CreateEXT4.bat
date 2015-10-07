@@ -1,13 +1,9 @@
-@echo off
-rem
-rem Create EXT4 filesystem image from folder %1
-rem
-
+if "%1"=="" exit
 mode con lines=35
 
 set workdir=%~dp0
-set newimage=%workdir%%~n1.img
+set newimage=pl%~n1.img
 
 cd /D %workdir%
-make_ext4fs -l size -a %newimage% d data >> path
+make_ext4fs -l size -a %newimage% %1 data >> path
 del temp.bat

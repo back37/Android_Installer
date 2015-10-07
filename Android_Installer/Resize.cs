@@ -62,6 +62,8 @@ namespace Android_Installer
                 trackBar1.Value = sz;
                 label1.Text = "Data size: " + trackBar1.Value + " mb";
                 trackBar1.TickFrequency = trackBar1.Maximum / 10;
+
+                tb = trackBar1.Value;
             }
             catch (Exception ex)
             {
@@ -149,6 +151,25 @@ namespace Android_Installer
                     efi.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                     efi.Start();
                     efi.WaitForExit();
+
+                    if (Directory.Exists(boot + @"\Android"))
+                    {
+                        File.Move(Directory.GetCurrentDirectory() + @"\Bin\data.img", boot + @"\Android\data.img");
+                    }
+                    else
+                    {
+                        if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS"))
+                        {
+                            File.Move(Directory.GetCurrentDirectory() + @"\Bin\data.img", Directory.GetCurrentDirectory() + @"\Android\OS\data.img");
+                        }
+                        else
+                        {
+                            if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS") == false)
+                                Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Android\OS");
+
+                            File.Move(Directory.GetCurrentDirectory() + @"\Bin\data.img", Directory.GetCurrentDirectory() + @"\Android\OS\data.img");
+                        }
+                    }
                 }
                 else
                 {
@@ -160,7 +181,26 @@ namespace Android_Installer
                     }
                     double ds = tb * 1024 * 1024;
                     ds = Convert.ToDouble(ds.ToString().Replace("-", ""));
-                    str = str.Replace("size", ds.ToString()).Replace("path", "\"" + Directory.GetCurrentDirectory() + @"\log.txt""");
+                    string rs = "";
+                    if (Directory.Exists(boot + @"\Android"))
+                    {
+                        rs = "\"" + boot + @"\Android\%~n1.img" + "\"";
+                    }
+                    else
+                    {
+                        if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS"))
+                        {
+                            rs = "\"" + Directory.GetCurrentDirectory() + @"\Android\OS\%~n1.img" + "\"";
+                        }
+                        else
+                        {
+                            if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS") == false)
+                                Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Android\OS");
+
+                            rs = "\"" + Directory.GetCurrentDirectory() + @"\Android\OS\%~n1.img" + "\"";
+                        }
+                    }
+                    str = str.Replace("size", ds.ToString()).Replace("path", "\"" + Directory.GetCurrentDirectory() + @"\log.txt""").Replace("pl%~n1.img", rs);
 
                     using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"Bin\temp.bat", false))
                     {
@@ -172,24 +212,6 @@ namespace Android_Installer
                     efi.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                     efi.Start();
                     efi.WaitForExit();
-                }
-                if (Directory.Exists(boot + @"\Android"))
-                {
-                    File.Move(Directory.GetCurrentDirectory() + @"\Bin\data.img", boot + @"\Android\data.img");
-                }
-                else
-                {
-                    if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS"))
-                    {
-                        File.Move(Directory.GetCurrentDirectory() + @"\Bin\data.img", Directory.GetCurrentDirectory() + @"\Android\OS\data.img");
-                    }
-                    else
-                    {
-                        if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS") == false)
-                            Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Android\OS");
-
-                        File.Move(Directory.GetCurrentDirectory() + @"\Bin\data.img", Directory.GetCurrentDirectory() + @"\Android\OS\data.img");
-                    }
                 }
 
                 MessageBox.Show("Success!");
