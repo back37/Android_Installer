@@ -83,7 +83,7 @@ namespace Android_Installer
                             else
                             {
                                 //MessageBox.Show("Bootloader not found");
-                                Message M = new Message("Error!", "Bootloader not found", "Ok", null, null, 1, 10);
+                                Message M = new Message("Error!", "Bootloader not found", "Ok", null, null, 1, 30);
                                 M.ShowDialog(this);
                                 string[] s4 = { "Bootloader not found","" };
                                 lw.Write(s4);
@@ -103,7 +103,7 @@ namespace Android_Installer
                     {
                         //MessageBox.Show("Error - Bootloader not found!");
                         string[] s4 = { "Error - Bootloader not found!", "-----------------------------", "" };
-                        Message M = new Message("Error!", "Bootloader and configs\nnot found", "Ok", null, null, 1, 10);
+                        Message M = new Message("Error!", "Bootloader and configs\nnot found", "Ok", null, null, 1, 30);
                         M.ShowDialog(this);
                         lw.Write(s4);
                         Shown += (sender, args) => Close();
@@ -144,7 +144,7 @@ namespace Android_Installer
             catch (Exception ex)
             {
                 //MessageBox.Show("Error!\nMore: log.txt");
-                Message M = new Message("Program error!", "More info in: log.txt", "Ok", null, null, 1, 10);
+                Message M = new Message("Program error!", "More info in: log.txt", "Ok", null, null, 1, 30);
                 M.ShowDialog(this);
                 string[] s2 = { "Config editor error", ex.ToString(), "-----------------------------", "" };
                 lw.Write(s2);
@@ -375,7 +375,7 @@ namespace Android_Installer
             catch (Exception ex)
             {
                 //MessageBox.Show("Error!\nMore: log.txt");
-                Message M = new Message("Program error!", "More info in: log.txt", "Ok", null, null, 1, 10);
+                Message M = new Message("Program error!", "More info in: log.txt", "Ok", null, null, 1, 30);
                 M.ShowDialog(this);
                 string[] s2 = { "", "Config editor error", ex.ToString(), "-----------------------------", "" };
                 lw.Write(s2);

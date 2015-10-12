@@ -51,7 +51,7 @@ namespace Android_Installer
                 lw.Write(s4);
 
                 //MessageBox.Show("Error - Bin not found!");
-                Message M1 = new Message("Error!", "Bin not found", "Ok", null, null, 1, 10);
+                Message M1 = new Message("Error!", "Bin not found", "Ok", null, null, 1, 30);
                 M1.ShowDialog();
                 return;
             }

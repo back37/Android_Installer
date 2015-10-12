@@ -164,7 +164,7 @@ namespace Android_Installer
                     stopWatch.Stop();
 
                     //MessageBox.Show("Success!");
-                    Message M1 = new Message("Success!", "Delete complete", "Ok", null, null, 1, 0);
+                    Message M1 = new Message("Success!", "Delete complete", "Ok", null, null, 1, 10);
                     M1.ShowDialog(this);
                     string[] s3 = { "Runtime: " + label2.Text,"","Delete successful", "-----------------------------", "" };
                     lw.Write(s3);
@@ -183,7 +183,7 @@ namespace Android_Installer
             {
                 stopWatch.Stop();
                 //MessageBox.Show("Error!\nMore: log.txt");
-                Message M = new Message("Program error!", "More info in: log.txt", "Ok", null, null, 1, 10);
+                Message M = new Message("Program error!", "More info in: log.txt", "Ok", null, null, 1, 30);
                 M.ShowDialog(this);
                 string[] s2 = { "", "Data resize error", ex.ToString(), "-----------------------------", "" };
                 lw.Write(s2);

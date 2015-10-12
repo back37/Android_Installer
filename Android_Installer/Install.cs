@@ -75,7 +75,7 @@ namespace Android_Installer
             {
                 stopWatch.Stop();
                 //MessageBox.Show("Error - OS not found!");
-                Message M1 = new Message("Error!", "OS not found", "Ok", null, null, 1, 10);
+                Message M1 = new Message("Error!", "OS not found", "Ok", null, null, 1, 30);
                 M1.ShowDialog(this);
                 string[] s4 = { "Error - OS not found!", "-----------------------------", "" };
                 lw.Write(s4);
@@ -90,7 +90,7 @@ namespace Android_Installer
             stopWatch.Stop();
 
             //MessageBox.Show("Success!");
-            Message M = new Message("Success!", "Android install complete", "Ok", null, null, 1, 0);
+            Message M = new Message("Success!", "Android install complete", "Ok", null, null, 1, 10);
             M.ShowDialog(this);
             string[] s3 = { "Runtime: " + label3.Text, "","Install successful", "-----------------------------", "" };
             lw.Write(s3);
@@ -148,7 +148,7 @@ namespace Android_Installer
             {
                 stopWatch.Stop();
                 //MessageBox.Show("Error - OS not found!");
-                Message M1 = new Message("Error!", "OS not found", "Ok", null, null, 1, 10);
+                Message M1 = new Message("Error!", "OS not found", "Ok", null, null, 1, 30);
                 M1.ShowDialog(this);
                 string[] s4 = { "Error - OS not found!", "-----------------------------", "" };
                 lw.Write(s4);
@@ -162,7 +162,7 @@ namespace Android_Installer
             stopWatch.Stop();
 
             //MessageBox.Show("Success!");
-            Message M = new Message("Success!", "Android update complete", "Ok", null, null, 1, 0);
+            Message M = new Message("Success!", "Android update complete", "Ok", null, null, 1, 10);
             M.ShowDialog(this);
             string[] s3 = { "Runtime: " + label3.Text, "","Update successful", "-----------------------------", "" };
             lw.Write(s3);
@@ -184,7 +184,7 @@ namespace Android_Installer
             stopWatch.Stop();
 
             //MessageBox.Show("Success!");
-            Message M = new Message("Success!", "Bootloader update complete", "Ok", null, null, 1, 0);
+            Message M = new Message("Success!", "Bootloader update complete", "Ok", null, null, 1, 10);
             M.ShowDialog(this);
             string[] s3 = { "Runtime: " + label3.Text, "","Update successful", "-----------------------------", "" };
             lw.Write(s3);
@@ -231,7 +231,7 @@ namespace Android_Installer
                 else
                 {
                     //MessageBox.Show("Error - EFI not found!");
-                    Message M1 = new Message("Error!", "EFI not found", "Ok", null, null, 1, 10);
+                    Message M1 = new Message("Error!", "EFI not found", "Ok", null, null, 1, 30);
                     M1.ShowDialog(this);
                     string[] s4 = { "Error - EFI not found!", "-----------------------------", "" };
                     lw.Write(s4);
@@ -321,7 +321,7 @@ namespace Android_Installer
                         else
                         {
                             //MessageBox.Show("Error - System not found!");
-                            Message M1 = new Message("Error!", "System not found", "Ok", null, null, 1, 10);
+                            Message M1 = new Message("Error!", "System not found", "Ok", null, null, 1, 30);
                             M1.ShowDialog(this);
                             string[] s4 = { "Error - System not found!", "-----------------------------", "" };
                             lw.Write(s4);
@@ -365,7 +365,7 @@ namespace Android_Installer
                 else
                 {
                     //MessageBox.Show("Error - Bootloader not found!");
-                    Message M = new Message("Error!", "Bootloader not found", "Ok", null, null, 1, 10);
+                    Message M = new Message("Error!", "Bootloader not found", "Ok", null, null, 1, 30);
                     M.ShowDialog(this);
                     string[] s4 = { "Error - Bootloader not found!", "-----------------------------", "" };
                     lw.Write(s4);
@@ -376,7 +376,7 @@ namespace Android_Installer
             catch (Exception ex)
             {
                 //MessageBox.Show("Error!\nMore: log.txt");
-                Message M = new Message("Program error!", "More info in: log.txt", "Ok", null, null, 1, 10);
+                Message M = new Message("Program error!", "More info in: log.txt", "Ok", null, null, 1, 30);
                 M.ShowDialog(this);
                 string[] s2 = { "Android install error", ex.ToString(), "-----------------------------", "" };
                 lw.Write(s2);
@@ -543,7 +543,7 @@ namespace Android_Installer
             catch (Exception ex)
             {
                 /*MessageBox.Show("Error!\nMore: log.txt");*/
-                Message M = new Message("Program error!", "More info in: log.txt", "Ok", null, null, 1, 10);
+                Message M = new Message("Program error!", "More info in: log.txt", "Ok", null, null, 1, 30);
                 M.ShowDialog(this);
                 string[] s2 = { "Android install error", ex.ToString(), "-----------------------------", "" };
                 lw.Write(s2);
@@ -591,7 +591,7 @@ namespace Android_Installer
                 else
                 {
                     //MessageBox.Show("Error - Bootloader not found!");
-                    Message M = new Message("Error!", "Bootloader not found", "Ok", null, null, 1, 10);
+                    Message M = new Message("Error!", "Bootloader not found", "Ok", null, null, 1, 30);
                     M.ShowDialog(this);
                     string[] s4 = { "Error - Bootloader not found!", "-----------------------------", "" };
                     lw.Write(s4);
