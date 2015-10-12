@@ -25,26 +25,49 @@ namespace Android_Installer
 
                 if (Directory.Exists(boot + @"\Android"))
                 {
+                    Process efi = new Process();
 
                     if (Directory.Exists(boot + @"\EFI"))
                     {
                         p = boot + @"\";
+
+                        efi.StartInfo.Verb = "runas";
+                        efi.StartInfo.FileName = boot + @"\Windows\System32\cmd.exe";
+                        efi.StartInfo.Arguments = @"/c dir C:\";
+                        efi.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                        efi.EnableRaisingEvents = true;
+                        efi.StartInfo.RedirectStandardOutput = true;
+                        efi.StartInfo.UseShellExecute = false;
+                        efi.StartInfo.CreateNoWindow = true;
+                        efi.Start();
+                        StreamReader srIncoming = efi.StandardOutput;
+                        string[] s = { srIncoming.ReadToEnd() };
+                        lw.Write(s);
+                        efi.WaitForExit();
                     }
                     else
                     {
-                        Process efi = new Process();
                         StreamWriter BatFile2 = new StreamWriter(@"Bin\2.bat", false, Encoding.GetEncoding(1251));
+                        BatFile2.WriteLine("echo off");
                         BatFile2.WriteLine("chcp 1251");
-                        BatFile2.WriteLine(@"echo Try to mount S >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                        BatFile2.WriteLine(@"echo Try to mount S");
                         BatFile2.WriteLine(@"mountvol S: /S ");
-                        BatFile2.WriteLine(@"dir S:\ >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                        BatFile2.WriteLine(@"echo.>> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                        BatFile2.WriteLine(@"dir S:\");
+                        BatFile2.WriteLine(@"echo.");
                         BatFile2.WriteLine(@"del Bin\2.bat");
                         BatFile2.Close();
+
                         efi.StartInfo.Verb = "runas";
                         efi.StartInfo.FileName = @"Bin\2.bat";
                         efi.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                        efi.EnableRaisingEvents = true;
+                        efi.StartInfo.RedirectStandardOutput = true;
+                        efi.StartInfo.UseShellExecute = false;
+                        efi.StartInfo.CreateNoWindow = true;
                         efi.Start();
+                        StreamReader srIncoming = efi.StandardOutput;
+                        string[] s = { srIncoming.ReadToEnd() };
+                        lw.Write(s);
                         efi.WaitForExit();
 
                         if (Directory.Exists(@"S:\EFI"))
@@ -59,8 +82,9 @@ namespace Android_Installer
                             }
                             else
                             {
-                                MessageBox.Show("Bootloader not found");
-                                return;
+                                //MessageBox.Show("Bootloader not found");
+                                Message M = new Message("Error!", "Bootloader not found", "Ok", null, null, 1, 10);
+                                M.ShowDialog(this);
                                 string[] s4 = { "Bootloader not found","" };
                                 lw.Write(s4);
                                 Close();
@@ -77,10 +101,12 @@ namespace Android_Installer
                     }
                     else
                     {
-                        MessageBox.Show("Error - Bootloader not found!");
+                        //MessageBox.Show("Error - Bootloader not found!");
                         string[] s4 = { "Error - Bootloader not found!", "-----------------------------", "" };
+                        Message M = new Message("Error!", "Bootloader and configs\nnot found", "Ok", null, null, 1, 10);
+                        M.ShowDialog(this);
                         lw.Write(s4);
-                        Close();
+                        Shown += (sender, args) => Close();
                         return;
                     }
                 }
@@ -117,7 +143,9 @@ namespace Android_Installer
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error!\nMore: log.txt");
+                //MessageBox.Show("Error!\nMore: log.txt");
+                Message M = new Message("Program error!", "More info in: log.txt", "Ok", null, null, 1, 10);
+                M.ShowDialog(this);
                 string[] s2 = { "Config editor error", ex.ToString(), "-----------------------------", "" };
                 lw.Write(s2);
                 Close();
@@ -179,11 +207,13 @@ namespace Android_Installer
         {
             if (richTextBox1.Modified == true)
             {
-                DialogResult result = MessageBox.Show(null, "Save changes?", "", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                //DialogResult result = MessageBox.Show(null, "Save changes?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                Message M = new Message("Attention!", "Are you sure want to save changes\nAnd close editor?", "Cancel", "Yes", "No", 3, 0);
+                M.ShowDialog(this);
 
-                switch (result)
+                switch (M.fk)
                 {
-                    case DialogResult.Yes:
+                    case 2:
                         {
                             string[] s = { comboBox1.SelectedItem.ToString() + " - changes saved", "Config editor closed", "-----------------------------" };
                             lw.Write(s);
@@ -195,14 +225,14 @@ namespace Android_Installer
                             }
                             break;
                         }
-                    case DialogResult.No:
+                    case 3:
                         {
                             string[] s = { comboBox1.SelectedItem.ToString() + " - changes cancelled", "Config editor closed", "-----------------------------" };
                             lw.Write(s);
 
                             break;
                         }
-                    case DialogResult.Cancel:
+                    case 1:
                         {
                             string[] s = { "Closing cancelled" };
                             lw.Write(s);
@@ -301,11 +331,14 @@ namespace Android_Installer
             {
                 if (richTextBox1.Modified == true)
                 {
-                    DialogResult result = MessageBox.Show(null, "Save changes?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    //DialogResult result = MessageBox.Show(null, "Save changes?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                    switch (result)
+                    Message M = new Message("Attention!", "Do you want to save changes?", "No", "Yes", null, 2, 0);
+                    M.ShowDialog(this);
+
+                    switch (M.fk)
                     {
-                        case DialogResult.Yes:
+                        case 2:
                             {
                                 string[] s = { comboBox1.Items[c].ToString() + " - changes saved", };
                                 lw.Write(s);
@@ -317,7 +350,7 @@ namespace Android_Installer
                                 }
                                 break;
                             }
-                        case DialogResult.No:
+                        case 1:
                             {
                                 string[] s = { comboBox1.Items[c].ToString() + " - changes cancelled", };
                                 lw.Write(s);
@@ -341,7 +374,9 @@ namespace Android_Installer
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error!\nMore: log.txt");
+                //MessageBox.Show("Error!\nMore: log.txt");
+                Message M = new Message("Program error!", "More info in: log.txt", "Ok", null, null, 1, 10);
+                M.ShowDialog(this);
                 string[] s2 = { "", "Config editor error", ex.ToString(), "-----------------------------", "" };
                 lw.Write(s2);
                 Close();

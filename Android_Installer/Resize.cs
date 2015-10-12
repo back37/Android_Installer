@@ -1,27 +1,52 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
+using System.Threading;
 
 namespace Android_Installer
 {
     public partial class Resize : Form
     {
+        Stopwatch stopWatch = new Stopwatch();
         Point last;
         LogWriter lw = new LogWriter();
         long tb = 0;
+        int st = 0;
+        string boot = Environment.ExpandEnvironmentVariables(@"%SystemDrive%");
+
+        public void btnEnable()
+        {
+            button1.Enabled = true;
+            button3.Enabled = true;
+            progressBar1.Visible = false;
+            progressBar1.Value = 0;
+            timer1.Stop();
+            st = 0;
+            label2.Visible = false;
+            stopWatch.Reset();
+        }
 
         public Resize()
         {
             try
             {
                 InitializeComponent();
+
+                label1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
+                label1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
+                label2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
+                label2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
+                progressBar1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
+                progressBar1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
+                radioButton1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
+                radioButton1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
+                radioButton2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
+                radioButton2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
+
+                CheckForIllegalCrossThreadCalls = false;
 
                 var boot = Environment.ExpandEnvironmentVariables(@"%SystemDrive%");
                 DriveInfo Drive = new System.IO.DriveInfo(boot);
@@ -67,9 +92,177 @@ namespace Android_Installer
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error!\nMore: log.txt");
+                //MessageBox.Show("Error!\nMore: log.txt");
+                Message M = new Message("Program error!", "More info in: log.txt", "Ok", null, null, 1, 10);
+                M.ShowDialog(this);
                 string[] s2 = { "Data resize error", ex.ToString(), "-----------------------------", "" };
                 lw.Write(s2);
+            }
+        }
+
+        public void start()
+        {
+            Process efi = new Process();
+            
+            efi.StartInfo.Verb = "runas";
+            efi.StartInfo.FileName = @"Bin\temp.bat";
+            efi.StartInfo.Arguments = @"data";
+            efi.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            efi.EnableRaisingEvents = true;
+            try
+            {
+                /*efi.StartInfo.RedirectStandardOutput = true;
+                efi.StartInfo.UseShellExecute = true;
+                efi.StartInfo.CreateNoWindow = true;*/
+                efi.Start();
+                /*StreamReader srIncoming = efi.StandardOutput;
+                string[] s = { srIncoming.ReadToEnd() };
+                lw.Write(s);*/
+                efi.WaitForExit();
+            }
+            finally
+            {
+                efi.Close();
+            }
+        }
+
+        public void resize_proc()
+        {
+            try
+            {
+                if (File.Exists(boot + @"\Android\data.img"))
+                {
+                    File.Delete(boot + @"\Android\data.img");
+                }
+                else
+                {
+                    if (File.Exists(Directory.GetCurrentDirectory() + @"\Android\OS\data.img"))
+                    {
+                        File.Delete(Directory.GetCurrentDirectory() + @"\Android\OS\data.img");
+                    }
+                }
+
+                st = (10);
+
+                string[] s = { "Set size: " + trackBar1.Value.ToString() + "mb" };
+                lw.Write(s);
+
+                if (radioButton1.Checked)
+                {
+                    string[] s5 = { "Data format: ext3","" };
+                    lw.Write(s5);
+
+                    StreamWriter BatFile2 = new StreamWriter(@"Bin\temp.bat", false, Encoding.GetEncoding(1251));
+                    BatFile2.WriteLine(@"echo off");
+                    BatFile2.WriteLine("chcp 1251");
+                    BatFile2.WriteLine(@"echo Data Resize >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                    BatFile2.WriteLine("cd \"" + Directory.GetCurrentDirectory() + @"\Bin"" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                    BatFile2.WriteLine(@"tfile.exe data.img 1 >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                    BatFile2.WriteLine(@"mke2fs.exe -F data.img >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                    BatFile2.WriteLine(@"resize2fs.exe -p data.img " + (trackBar1.Value) * 1024 + @" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                    BatFile2.WriteLine(@"echo.>> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
+                    BatFile2.WriteLine(@"del temp.bat");
+                    BatFile2.Close();
+
+                    st = (40);
+                    
+
+                    Thread newThread = new Thread(start);
+                    newThread.Start();
+                    newThread.Join();
+
+                    st = (70);
+
+                    if (Directory.Exists(boot + @"\Android"))
+                    {
+                        File.Move(Directory.GetCurrentDirectory() + @"\Bin\data.img", boot + @"\Android\data.img");
+                    }
+                    else
+                    {
+                        if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS"))
+                        {
+                            File.Move(Directory.GetCurrentDirectory() + @"\Bin\data.img", Directory.GetCurrentDirectory() + @"\Android\OS\data.img");
+                        }
+                        else
+                        {
+                            if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS") == false)
+                                Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Android\OS");
+
+                            File.Move(Directory.GetCurrentDirectory() + @"\Bin\data.img", Directory.GetCurrentDirectory() + @"\Android\OS\data.img");
+                        }
+                    }
+                    st = (100);
+                }
+                else
+                {
+                    string[] s5 = { "Data format: ext4","" };
+                    lw.Write(s5);
+
+                    Process efi = new Process();
+                    string str = string.Empty;
+                    using (System.IO.StreamReader reader = new System.IO.StreamReader(@"Bin\CreateEXT4.bat", true))
+                    {
+                        str = reader.ReadToEnd();
+                    }
+                    long ds = tb * 1024 * 1024;
+                    ds = Convert.ToInt64(ds.ToString().Replace("-", ""));
+                    string rs = "";
+
+                    st = (20);
+
+                    if (Directory.Exists(boot + @"\Android"))
+                    {
+                        rs = "\"" + boot + @"\Android\%~n1.img" + "\"";
+                    }
+                    else
+                    {
+                        if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS"))
+                        {
+                            rs = "\"" + Directory.GetCurrentDirectory() + @"\Android\OS\%~n1.img" + "\"";
+                        }
+                        else
+                        {
+                            if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS") == false)
+                                Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Android\OS");
+
+                            rs = "\"" + Directory.GetCurrentDirectory() + @"\Android\OS\%~n1.img" + "\"";
+                        }
+                    }
+                    str = str.Replace("size", ds.ToString()).Replace("path", "\"" + Directory.GetCurrentDirectory() + @"\log.txt""").Replace("pl%~n1.img", rs);
+
+                    st = (40);
+
+                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"Bin\temp.bat", false))
+                    {
+                        file.Write(str);
+                    }
+
+                    st = (60);
+
+                    Thread newThread = new Thread(start);
+                    newThread.Start();
+                    newThread.Join();
+
+                    st = (100);
+                }
+                stopWatch.Stop();
+                //MessageBox.Show("Success!");
+                Message M1 = new Message("Success!", "Resize complete", "Ok", null, null, 1, 0);
+                M1.ShowDialog(this);
+                string[] s3 = { "","Runtime: " + label2.Text,"","Resize successful", "-----------------------------", "" };
+                lw.Write(s3);
+                btnEnable();
+                Close();
+            }
+            catch (Exception ex)
+            {
+                stopWatch.Stop();
+                //MessageBox.Show("Error!\nMore: log.txt");
+                Message M = new Message("Program error!", "More info in: log.txt", "Ok", null, null, 1, 10);
+                M.ShowDialog(this);
+                string[] s2 = { "Data resize error", ex.ToString(), "-----------------------------", "" };
+                lw.Write(s2);
+                btnEnable();
             }
         }
 
@@ -115,117 +308,28 @@ namespace Android_Installer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            try
-            {
-                var boot = Environment.ExpandEnvironmentVariables(@"%SystemDrive%");
+            label2.Visible = true;
+            stopWatch.Start();
+            
+            timer1.Start();
+            progressBar1.Visible = true;
+            button1.Enabled = false;
+            button3.Enabled = false;
+            new Thread(() => resize_proc()).Start();
+        }
 
-                if (File.Exists(boot + @"\Android\data.img"))
-                {
-                    File.Delete(boot + @"\Android\data.img");
-                }
-                else
-                {
-                    if (File.Exists(Directory.GetCurrentDirectory() + @"\Android\OS\data.img"))
-                    {
-                        File.Delete(Directory.GetCurrentDirectory() + @"\Android\OS\data.img");
-                    }
-                }
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (progressBar1.Value < st)
+                progressBar1.Value = st;
 
-                string[] s = { "Set size", trackBar1.Value.ToString() + " mb", "" };
-                lw.Write(s);
-                if (radioButton1.Checked)
-                {
-                    Process efi = new Process();
-                    StreamWriter BatFile2 = new StreamWriter(@"Bin\temp.bat", false, Encoding.GetEncoding(1251));
-                    BatFile2.WriteLine("chcp 1251");
-                    BatFile2.WriteLine(@"echo Data Resize >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                    BatFile2.WriteLine("cd \"" + Directory.GetCurrentDirectory() + @"\Bin"" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                    BatFile2.WriteLine(@"tfile.exe data.img 1 >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                    BatFile2.WriteLine(@"mke2fs.exe -F data.img >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                    BatFile2.WriteLine(@"resize2fs.exe -p data.img " + (trackBar1.Value) * 1024 + @" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                    BatFile2.WriteLine(@"echo.>> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
-                    BatFile2.WriteLine(@"del temp.bat");
-                    BatFile2.Close();
-                    efi.StartInfo.Verb = "runas";
-                    efi.StartInfo.FileName = @"Bin\temp.bat";
-                    efi.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                    efi.Start();
-                    efi.WaitForExit();
+            TimeSpan ts = stopWatch.Elapsed;
 
-                    if (Directory.Exists(boot + @"\Android"))
-                    {
-                        File.Move(Directory.GetCurrentDirectory() + @"\Bin\data.img", boot + @"\Android\data.img");
-                    }
-                    else
-                    {
-                        if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS"))
-                        {
-                            File.Move(Directory.GetCurrentDirectory() + @"\Bin\data.img", Directory.GetCurrentDirectory() + @"\Android\OS\data.img");
-                        }
-                        else
-                        {
-                            if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS") == false)
-                                Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Android\OS");
+            string elapsedTime = String.Format("{1:00}:{2:00}.{3:00}",
+                ts.Hours, ts.Minutes, ts.Seconds,
+                ts.Milliseconds / 10);
 
-                            File.Move(Directory.GetCurrentDirectory() + @"\Bin\data.img", Directory.GetCurrentDirectory() + @"\Android\OS\data.img");
-                        }
-                    }
-                }
-                else
-                {
-                    Process efi = new Process();
-                    string str = string.Empty;
-                    using (System.IO.StreamReader reader = new System.IO.StreamReader(@"Bin\CreateEXT4.bat", true))
-                    {
-                        str = reader.ReadToEnd();
-                    }
-                    long ds = tb * 1024 * 1024;
-                    ds = Convert.ToInt64(ds.ToString().Replace("-", ""));
-                    string rs = "";
-                    if (Directory.Exists(boot + @"\Android"))
-                    {
-                        rs = "\"" + boot + @"\Android\%~n1.img" + "\"";
-                    }
-                    else
-                    {
-                        if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS"))
-                        {
-                            rs = "\"" + Directory.GetCurrentDirectory() + @"\Android\OS\%~n1.img" + "\"";
-                        }
-                        else
-                        {
-                            if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS") == false)
-                                Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Android\OS");
-
-                            rs = "\"" + Directory.GetCurrentDirectory() + @"\Android\OS\%~n1.img" + "\"";
-                        }
-                    }
-                    str = str.Replace("size", ds.ToString()).Replace("path", "\"" + Directory.GetCurrentDirectory() + @"\log.txt""").Replace("pl%~n1.img", rs);
-
-                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"Bin\temp.bat", false))
-                    {
-                        file.Write(str);
-                    }
-                    efi.StartInfo.Verb = "runas";
-                    efi.StartInfo.FileName = @"Bin\temp.bat";
-                    efi.StartInfo.Arguments = @"data";
-                    efi.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                    efi.Start();
-                    efi.WaitForExit();
-                }
-
-                MessageBox.Show("Success!");
-                string[] s3 = { "Resize successful", "-----------------------------","" };
-                lw.Write(s3);
-
-                Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error!\nMore: log.txt");
-                string[] s2 = { "Data resize error", ex.ToString(), "-----------------------------", "" };
-                lw.Write(s2);
-            }
+            label2.Text = elapsedTime;
         }
     }
 }

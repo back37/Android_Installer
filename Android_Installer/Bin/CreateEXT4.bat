@@ -1,3 +1,4 @@
+echo off
 if "%1"=="" exit
 mode con lines=35
 
@@ -6,4 +7,5 @@ set newimage=pl%~n1.img
 
 cd /D %workdir%
 make_ext4fs -l size -a %newimage% %1 data >> path
+echo.
 del temp.bat
