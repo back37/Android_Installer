@@ -342,9 +342,11 @@ namespace Android_Installer
                     StreamWriter BatFile3 = new StreamWriter(@"Bin\3.bat", false, Encoding.GetEncoding(1251));
                     BatFile3.WriteLine("echo off");
                     BatFile3.WriteLine("chcp 1251");
-                    BatFile3.WriteLine(@"echo Try to mount S");
-                    BatFile3.WriteLine(@"mountvol S: /S ");
-                    BatFile3.WriteLine(@"dir S:\");
+                    BatFile3.WriteLine(@"echo Install booltloader");
+                    BatFile3.WriteLine(@"echo Set path " + pt);
+                    BatFile3.WriteLine(@"bcdedit /set {bootmgr} path " + pt);
+                    BatFile3.WriteLine(@"echo Set description """ + n);
+                    BatFile3.WriteLine(@"bcdedit /set {bootmgr} description """ + n);
                     BatFile3.WriteLine(@"echo.");
                     BatFile3.WriteLine(@"del Bin\3.bat");
                     BatFile3.Close();
