@@ -289,7 +289,7 @@ namespace Android_Installer
                     st = (100);
                 }
                 stopWatch.Stop();
-                if (Directory.Exists("Bin\\data") == false)
+                if (Directory.Exists("Bin\\data"))
                     Directory.Delete("Bin\\data",true);
                 //MessageBox.Show("Success!");
                 if (er != 1)

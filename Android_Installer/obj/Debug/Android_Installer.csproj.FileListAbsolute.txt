@@ -1,0 +1,13 @@
+D:\VS\Android_Installer\Android_Installer\Android_Installer\bin\Debug\Android_Installer.exe
+D:\VS\Android_Installer\Android_Installer\Android_Installer\bin\Debug\Android_Installer.pdb
+D:\VS\Android_Installer\Android_Installer\Android_Installer\obj\Debug\Android_Installer.csprojResolveAssemblyReference.cache
+D:\VS\Android_Installer\Android_Installer\Android_Installer\obj\Debug\Android_Installer.Config.resources
+D:\VS\Android_Installer\Android_Installer\Android_Installer\obj\Debug\Android_Installer.Editor.resources
+D:\VS\Android_Installer\Android_Installer\Android_Installer\obj\Debug\Android_Installer.Main.resources
+D:\VS\Android_Installer\Android_Installer\Android_Installer\obj\Debug\Android_Installer.Message.resources
+D:\VS\Android_Installer\Android_Installer\Android_Installer\obj\Debug\Android_Installer.Resize.resources
+D:\VS\Android_Installer\Android_Installer\Android_Installer\obj\Debug\Android_Installer.Install.resources
+D:\VS\Android_Installer\Android_Installer\Android_Installer\obj\Debug\Android_Installer.Properties.Resources.resources
+D:\VS\Android_Installer\Android_Installer\Android_Installer\obj\Debug\Android_Installer.csproj.GenerateResource.Cache
+D:\VS\Android_Installer\Android_Installer\Android_Installer\obj\Debug\Android_Installer.exe
+D:\VS\Android_Installer\Android_Installer\Android_Installer\obj\Debug\Android_Installer.pdb
