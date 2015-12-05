@@ -111,13 +111,7 @@ namespace Android_Installer
             efi.EnableRaisingEvents = true;
             try
             {
-                /*efi.StartInfo.RedirectStandardOutput = true;
-                efi.StartInfo.UseShellExecute = true;
-                efi.StartInfo.CreateNoWindow = true;*/
                 efi.Start();
-                /*StreamReader srIncoming = efi.StandardOutput;
-                string[] s = { srIncoming.ReadToEnd() };
-                lw.Write(s);*/
                 efi.WaitForExit();
             }
             finally
@@ -125,9 +119,9 @@ namespace Android_Installer
                 efi.Close();
             }
         }
-
         public void resize_proc()
         {
+            int er = 0;
             try
             {
                 if (File.Exists(boot + @"\Android\data.img"))
@@ -176,12 +170,24 @@ namespace Android_Installer
                     if (Directory.Exists(boot + @"\Android"))
                     {
                         File.Move(Directory.GetCurrentDirectory() + @"\Bin\data.img", boot + @"\Android\data.img");
+
+                        FileInfo file = new FileInfo(boot + @"\Android\data.img");
+                        long size = file.Length;
+                        int sz = Convert.ToInt32(Convert.ToDouble(size) / 1024 / 1024);
+                        if (sz < trackBar1.Value)
+                            er = 1;
                     }
                     else
                     {
                         if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS"))
                         {
                             File.Move(Directory.GetCurrentDirectory() + @"\Bin\data.img", Directory.GetCurrentDirectory() + @"\Android\OS\data.img");
+
+                            FileInfo file = new FileInfo(Directory.GetCurrentDirectory() + @"\Android\OS\data.img");
+                            long size = file.Length;
+                            int sz = Convert.ToInt32(Convert.ToDouble(size) / 1024 / 1024);
+                            if (sz < trackBar1.Value)
+                                er = 1;
                         }
                         else
                         {
@@ -189,6 +195,12 @@ namespace Android_Installer
                                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Android\OS");
 
                             File.Move(Directory.GetCurrentDirectory() + @"\Bin\data.img", Directory.GetCurrentDirectory() + @"\Android\OS\data.img");
+
+                            FileInfo file = new FileInfo(Directory.GetCurrentDirectory() + @"\Android\OS\data.img");
+                            long size = file.Length;
+                            int sz = Convert.ToInt32(Convert.ToDouble(size) / 1024 / 1024);
+                            if (sz < trackBar1.Value)
+                                er = 1;
                         }
                     }
                     st = (100);
@@ -197,6 +209,9 @@ namespace Android_Installer
                 {
                     string[] s5 = { "Data format: ext4","" };
                     lw.Write(s5);
+
+                    if (Directory.Exists("Bin\\data") == false)
+                        Directory.CreateDirectory("Bin\\data");
 
                     Process efi = new Process();
                     string str = string.Empty;
@@ -243,14 +258,55 @@ namespace Android_Installer
                     newThread.Start();
                     newThread.Join();
 
+                    if (Directory.Exists(boot + @"\Android"))
+                    {
+                        FileInfo file = new FileInfo(boot + @"\Android\data.img");
+                        long size = file.Length;
+                        int sz = Convert.ToInt32(Convert.ToDouble(size) / 1024 / 1024);
+                        if (sz < trackBar1.Value)
+                            er = 1;
+                    }
+                    else
+                    {
+                        if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS"))
+                        {
+                            FileInfo file = new FileInfo(Directory.GetCurrentDirectory() + @"\Android\OS\data.img");
+                            long size = file.Length;
+                            int sz = Convert.ToInt32(Convert.ToDouble(size) / 1024 / 1024);
+                            if (sz < trackBar1.Value)
+                                er = 1;
+                        }
+                        else
+                        {
+                            FileInfo file = new FileInfo(Directory.GetCurrentDirectory() + @"\Android\OS\data.img");
+                            long size = file.Length;
+                            int sz = Convert.ToInt32(Convert.ToDouble(size) / 1024 / 1024);
+                            if (sz < trackBar1.Value)
+                                er = 1;
+                        }
+                    }
+
                     st = (100);
                 }
                 stopWatch.Stop();
+                if (Directory.Exists("Bin\\data") == false)
+                    Directory.Delete("Bin\\data",true);
                 //MessageBox.Show("Success!");
-                Message M1 = new Message("Success!", "Resize complete", "Ok", null, null, 1, 10);
-                M1.ShowDialog(this);
-                string[] s3 = { "","Runtime: " + label2.Text,"","Resize successful", "-----------------------------", "" };
-                lw.Write(s3);
+                if (er != 1)
+                {
+                    Message M1 = new Message("Success!", "Resize complete", "Ok", null, null, 1, 10);
+                    M1.ShowDialog(this);
+                    string[] s3 = { "", "Runtime: " + label2.Text, "", "Resize successful", "-----------------------------", "" };
+                    lw.Write(s3);
+                }
+                else
+                {
+                    Message M = new Message("Program error!", "More info in: log.txt", "Ok", null, null, 1, 30);
+                    M.ShowDialog(this);
+                    string[] s2 = { "Data resize error", "Something went wrong", "-----------------------------", "" };
+                    lw.Write(s2);
+                }
+
                 btnEnable();
                 Close();
             }

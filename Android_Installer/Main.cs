@@ -10,6 +10,9 @@ namespace Android_Installer
 {
     public partial class Main : Form
     {
+        Boolean en = true;
+        string txt = "default";
+        
         Stopwatch stopWatch = new Stopwatch();
         Point last;
         LogWriter lw = new LogWriter();
@@ -82,7 +85,7 @@ namespace Android_Installer
 
                         efi.StartInfo.Verb = "runas";
                         efi.StartInfo.FileName = boot + @"\Windows\System32\cmd.exe";
-                        efi.StartInfo.Arguments = @"/c dir C:\";
+                        efi.StartInfo.Arguments = @"/c dir C:";
                         efi.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                         efi.EnableRaisingEvents = true;
                         efi.Start();
@@ -195,13 +198,23 @@ namespace Android_Installer
         {
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
+
+            System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
+            Point[] p = new Point[4];
+            p[0] = new Point(0, 0);
+            p[1] = new Point(0, 48);
+            p[2] = new Point(210, 48);
+            p[3] = new Point(239, 0);
+            path.AddPolygon(p);
+            Region rgn = new Region(path);
+            button1.Region = rgn;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             string[] s = { "Android Install", "-----------------------------" };
             lw.Write(s);
-            Install f3 = new Install();
+            Install f3 = new Install(txt);
             f3.ShowDialog(this);
         }
 
@@ -283,6 +296,17 @@ namespace Android_Installer
                 ts.Milliseconds / 10);
 
             label2.Text = elapsedTime;
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            string[] s = { "Show settings", "-----------------------------" };
+            lw.Write(s);
+            Config f5 = new Config(en,txt);
+            f5.ShowDialog(this);
+
+            en = f5.ch;
+            txt = f5.text;
         }
     }
 }

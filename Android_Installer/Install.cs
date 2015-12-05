@@ -10,6 +10,45 @@ namespace Android_Installer
 {
     public partial class Install : Form
     {
+        public void unpack(string p)
+        {
+            Process pc = new Process();
+            StreamWriter BatFile1 = new StreamWriter(@"Bin\1.bat", false, Encoding.GetEncoding(1251));
+            BatFile1.WriteLine("echo off");
+            BatFile1.WriteLine("chcp 1251");
+            BatFile1.WriteLine("Bin\\7z.exe x \"" + p + "\" -o" + boot + "\\Android *system* >> \"" + Directory.GetCurrentDirectory() + @"\log.txt""");
+            BatFile1.WriteLine("Bin\\7z.exe x \"" + p + "\" -o" + boot + "\\Android *install.img >> \"" + Directory.GetCurrentDirectory() + @"\log.txt""");
+            BatFile1.WriteLine("Bin\\7z.exe x \"" + p + "\" -o" + boot + "\\Android *initrd.img >> \"" + Directory.GetCurrentDirectory() + @"\log.txt""");
+            BatFile1.WriteLine("Bin\\7z.exe x \"" + p + "\" -o" + boot + "\\Android *kernel >> \"" + Directory.GetCurrentDirectory() + @"\log.txt""");
+            BatFile1.WriteLine("Bin\\7z.exe x \"" + p + "\" -o" + boot + "\\Android *ramdisk.img >> \"" + Directory.GetCurrentDirectory() + @"\log.txt""");
+            if (checkBox2.Checked)
+                BatFile1.WriteLine("Bin\\7z.exe x \"" + p + "\" -o" + boot + "\\Android *data.img >> \"" + Directory.GetCurrentDirectory() + @"\log.txt""");
+            BatFile1.WriteLine("echo. >> \"" + Directory.GetCurrentDirectory() + @"\log.txt""");
+            BatFile1.WriteLine(@"del Bin\1.bat");
+            BatFile1.Close();
+
+            pc.StartInfo.Verb = "runas";
+            pc.StartInfo.FileName = @"Bin\1.bat";
+            pc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            pc.EnableRaisingEvents = true;
+            //pc.StartInfo.CreateNoWindow = true;
+            pc.Start();
+            pc.WaitForExit();
+
+            if (File.Exists(boot + @"\Android\data.img") == false && checkBox2.Checked)
+            {
+                if (File.Exists(Directory.GetCurrentDirectory() + @"\Android\OS\data.img"))
+                    File.Copy(Directory.GetCurrentDirectory() + @"\Android\OS\data.img", boot + @"\Android\data.img", true);
+                else
+                {
+                    Message M1 = new Message("Error!", "Data not found\nPlease make data resize after install", "Ok", null, null, 1, 30);
+                    M1.ShowDialog(this);
+                    string[] s4 = { "Error - Data not found!", "" };
+                    lw.Write(s4);
+                }
+            }
+                    
+        }
 
         public void btnEnable()
         {
@@ -64,27 +103,40 @@ namespace Android_Installer
 
             st = 40;
 
-            string ph = Directory.GetCurrentDirectory() + @"\Android\OS";
-            instBoot(ph);
+            string ph = boot + @"\Android";
 
-            st = 50;
-
-            if (Directory.Exists(ph))
-            { CopyDirectory(ph, boot + @"\Android", true); }
-            else
+            if (pl != "default" && pl != "" && pl != null)
             {
-                stopWatch.Stop();
-                //MessageBox.Show("Error - OS not found!");
-                Message M1 = new Message("Error!", "OS not found", "Ok", null, null, 1, 30);
-                M1.ShowDialog(this);
-                string[] s4 = { "Error - OS not found!", "-----------------------------", "" };
-                lw.Write(s4);
-
-                btnEnable();
-
-                Close();
-                return;
+                if (File.Exists(pl))
+                    unpack(pl);
+                else
+                {
+                    string[] s9 = { "File not exist, default android install", "" };
+                    lw.Write(s9);
+                }
             }
+            else {
+                if (Directory.Exists(ph))
+                { CopyDirectory(ph, boot + @"\Android", true); }
+                else
+                {
+                    stopWatch.Stop();
+                    //MessageBox.Show("Error - OS not found!");
+                    Message M1 = new Message("Error!", "OS not found", "Ok", null, null, 1, 30);
+                    M1.ShowDialog(this);
+                    string[] s4 = { "Error - OS not found!", "-----------------------------", "" };
+                    lw.Write(s4);
+
+                    btnEnable();
+
+                    Close();
+                    return;
+                }
+            }
+
+            st = 70;
+
+            instBoot(ph);
 
             st = 100;
             stopWatch.Stop();
@@ -106,6 +158,51 @@ namespace Android_Installer
             string[] s = { "Update Android", "" };
             lw.Write(s);
 
+            if (Directory.Exists(boot + @"\Android"))
+            {
+                if (checkBox2.Checked == false)
+                {
+                    if (File.Exists(boot + @"\Android\data.img"))
+                        File.Move(boot + @"\Android\data.img", boot + @"\data.img");
+
+                    Directory.Delete(boot + @"\Android", true);
+                    if (File.Exists(boot + @"\data.img"))
+                        File.Move(boot + @"\data.img", boot + @"\Android\data.img");
+                }
+                else
+                    Directory.Delete(boot + @"\Android", true);
+            }
+
+            if (pl != "default" && pl != "" && pl != null)
+            {
+                if (File.Exists(pl))
+                    unpack(pl);
+                else
+                {
+                    string[] s9 = { "File not exist, default android update", "" };
+                    lw.Write(s9);
+                }
+            }
+            else {
+                if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS"))
+                { CopyDirectory(Directory.GetCurrentDirectory() + @"\Android\OS", boot + @"\Android", checkBox2.Checked); }
+                else
+                {
+                    stopWatch.Stop();
+                    //MessageBox.Show("Error - OS not found!");
+                    Message M1 = new Message("Error!", "OS not found", "Ok", null, null, 1, 30);
+                    M1.ShowDialog(this);
+                    string[] s4 = { "Error - OS not found!", "-----------------------------", "" };
+                    lw.Write(s4);
+
+                    btnEnable();
+
+                    return;
+                }
+            }
+
+            st = 40;
+
             if (Directory.Exists(p + @"\boot"))
             {
                 var dir = new DirectoryInfo(p + @"\boot");
@@ -114,9 +211,9 @@ namespace Android_Installer
                     grub = file0.FullName;
 
 
-                    if (File.Exists(Directory.GetCurrentDirectory() + @"\Android\OS\system.img") || File.Exists(Directory.GetCurrentDirectory() + @"\Android\OS\system.sfs"))
+                    if (File.Exists(boot + @"\Android\system.img") || File.Exists(boot + @"\Android\system.sfs"))
                     {
-                        var dir1 = new DirectoryInfo(Directory.GetCurrentDirectory() + @"\Android\OS");
+                        var dir1 = new DirectoryInfo(boot + @"\Android");
                         foreach (FileInfo file1 in dir1.GetFiles("system*", SearchOption.AllDirectories))
                         {
                             sys = file1.Name;
@@ -138,24 +235,6 @@ namespace Android_Installer
                         }
                     }
                 }
-            }
-
-            st = 40;
-
-            if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS"))
-            { CopyDirectory(Directory.GetCurrentDirectory() + @"\Android\OS", boot + @"\Android", checkBox2.Checked); }
-            else
-            {
-                stopWatch.Stop();
-                //MessageBox.Show("Error - OS not found!");
-                Message M1 = new Message("Error!", "OS not found", "Ok", null, null, 1, 30);
-                M1.ShowDialog(this);
-                string[] s4 = { "Error - OS not found!", "-----------------------------", "" };
-                lw.Write(s4);
-
-                btnEnable();
-
-                return;
             }
 
             st = 100;
@@ -205,7 +284,7 @@ namespace Android_Installer
                 Process efi = new Process();
                 efi.StartInfo.Verb = "runas";
                 efi.StartInfo.FileName = boot + @"\Windows\System32\cmd.exe";
-                efi.StartInfo.Arguments = @"/c dir C:\";
+                efi.StartInfo.Arguments = @"/c dir C:";
                 efi.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 efi.EnableRaisingEvents = true;
                 efi.Start();
@@ -392,6 +471,7 @@ namespace Android_Installer
         string grub = "";
         string p = "";
         int st = 0;
+        string pl = "";
         LogWriter lw = new LogWriter();
         string boot = Environment.ExpandEnvironmentVariables(@"%SystemDrive%");
 
@@ -440,7 +520,7 @@ namespace Android_Installer
 
         }
 
-        public Install()
+        public Install(string txt)
         {
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
@@ -470,6 +550,8 @@ namespace Android_Installer
                 radioButton2.Enabled = true;
                 radioButton3.Enabled = true;
             }
+
+            pl = txt;
         }
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)

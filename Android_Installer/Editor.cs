@@ -33,7 +33,7 @@ namespace Android_Installer
 
                         efi.StartInfo.Verb = "runas";
                         efi.StartInfo.FileName = boot + @"\Windows\System32\cmd.exe";
-                        efi.StartInfo.Arguments = @"/c dir C:\";
+                        efi.StartInfo.Arguments = @"/c dir C:";
                         efi.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                         efi.EnableRaisingEvents = true;
                         efi.StartInfo.RedirectStandardOutput = true;
