@@ -96,9 +96,19 @@ namespace Android_Installer
 
             st = 30;
 
-            if (Directory.Exists(boot + @"\android"))
+            if (Directory.Exists(boot + @"\Android"))
             {
-                Directory.Delete(boot + @"\android", true);
+                if (checkBox2.Checked == false)
+                {
+                    if (File.Exists(boot + @"\Android\data.img"))
+                        File.Move(boot + @"\Android\data.img", boot + @"\data.img");
+
+                    Directory.Delete(boot + @"\Android", true);
+                    if (File.Exists(boot + @"\data.img"))
+                        File.Move(boot + @"\data.img", boot + @"\Android\data.img");
+                }
+                else
+                    Directory.Delete(boot + @"\Android", true);
             }
 
             st = 40;
