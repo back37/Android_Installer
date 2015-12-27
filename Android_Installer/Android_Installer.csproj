@@ -123,9 +123,15 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.manifest" />
-    <None Include="Bin\COPYING" />
-    <None Include="Bin\CreateEXT4.bat" />
-    <None Include="Bin\cygwin1.dll.ext3" />
+    <None Include="Bin\COPYING">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Bin\CreateEXT4.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Bin\cygwin1.dll.ext3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -137,17 +143,39 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Bin\7z.dll" />
-    <Content Include="Bin\7z.exe" />
-    <Content Include="Bin\cyggcc_s-1.dll" />
-    <Content Include="Bin\cygwin1.dll" />
-    <Content Include="Bin\dd.exe" />
-    <Content Include="Bin\dumpe2fs.exe" />
-    <Content Include="Bin\e2fsck.exe" />
-    <Content Include="Bin\make_ext4fs.exe" />
-    <Content Include="Bin\mke2fs.exe" />
-    <Content Include="Bin\resize2fs.exe" />
-    <Content Include="Bin\tfile.exe" />
+    <Content Include="Bin\7z.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Bin\7z.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Bin\cyggcc_s-1.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Bin\cygwin1.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Bin\dd.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Bin\dumpe2fs.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Bin\e2fsck.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Bin\make_ext4fs.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Bin\mke2fs.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Bin\resize2fs.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Bin\tfile.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Danleech-Simple-Android.ico" />
     <None Include="Normal.png" />
     <None Include="Maxi.png" />
