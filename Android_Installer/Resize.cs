@@ -146,6 +146,17 @@ namespace Android_Installer
                     string[] s5 = { "Data format: ext3","" };
                     lw.Write(s5);
 
+                    if (Directory.Exists("Bin\\data") == false)
+                        Directory.CreateDirectory("Bin\\data");
+
+                    if (File.Exists("Bin\\cygwin1.dll.ext3"))
+                    {
+                        if (File.Exists("Bin\\cygwin1.dll"))
+                            File.Move("Bin\\cygwin1.dll", "Bin\\cygwin1.dll.ext4");
+
+                        File.Move("Bin\\cygwin1.dll.ext3", "Bin\\cygwin1.dll");
+                    }
+
                     StreamWriter BatFile2 = new StreamWriter(@"Bin\temp.bat", false, Encoding.GetEncoding(1251));
                     BatFile2.WriteLine(@"echo off");
                     BatFile2.WriteLine("chcp 1251");
@@ -213,6 +224,14 @@ namespace Android_Installer
                     if (Directory.Exists("Bin\\data") == false)
                         Directory.CreateDirectory("Bin\\data");
 
+                    if (File.Exists("Bin\\cygwin1.dll.ext4"))
+                    {
+                        if (File.Exists("Bin\\cygwin1.dll"))
+                            File.Move("Bin\\cygwin1.dll", "Bin\\cygwin1.dll.ext3");
+
+                        File.Move("Bin\\cygwin1.dll.ext4", "Bin\\cygwin1.dll");
+                    }
+
                     Process efi = new Process();
                     string str = string.Empty;
                     using (System.IO.StreamReader reader = new System.IO.StreamReader(@"Bin\CreateEXT4.bat", true))
@@ -260,29 +279,31 @@ namespace Android_Installer
 
                     if (Directory.Exists(boot + @"\Android"))
                     {
-                        FileInfo file = new FileInfo(boot + @"\Android\data.img");
-                        long size = file.Length;
-                        int sz = Convert.ToInt32(Convert.ToDouble(size) / 1024 / 1024);
-                        if (sz < trackBar1.Value)
-                            er = 1;
-                    }
-                    else
-                    {
-                        if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS"))
+                        if (File.Exists(boot + @"\Android\data.img"))
                         {
-                            FileInfo file = new FileInfo(Directory.GetCurrentDirectory() + @"\Android\OS\data.img");
+                            FileInfo file = new FileInfo(boot + @"\Android\data.img");
                             long size = file.Length;
                             int sz = Convert.ToInt32(Convert.ToDouble(size) / 1024 / 1024);
                             if (sz < trackBar1.Value)
                                 er = 1;
                         }
+                    }
+                    else
+                    {
+                        if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS"))
+                        {
+                            if (File.Exists(Directory.GetCurrentDirectory() + @"\Android\OS\data.img"))
+                            {
+                                FileInfo file = new FileInfo(Directory.GetCurrentDirectory() + @"\Android\OS\data.img");
+                                long size = file.Length;
+                                int sz = Convert.ToInt32(Convert.ToDouble(size) / 1024 / 1024);
+                                if (sz < trackBar1.Value)
+                                    er = 1;
+                            }
+                        }
                         else
                         {
-                            FileInfo file = new FileInfo(Directory.GetCurrentDirectory() + @"\Android\OS\data.img");
-                            long size = file.Length;
-                            int sz = Convert.ToInt32(Convert.ToDouble(size) / 1024 / 1024);
-                            if (sz < trackBar1.Value)
-                                er = 1;
+                            er = 1;
                         }
                     }
 
@@ -301,14 +322,13 @@ namespace Android_Installer
                 }
                 else
                 {
-                    Message M = new Message("Program error!", "More info in: log.txt", "Ok", null, null, 1, 30);
+                    Message M = new Message("Attention!", "New data size is wrong\nMore info in: log.txt", "Ok", null, null, 1, 10);
                     M.ShowDialog(this);
-                    string[] s2 = { "Data resize error", "Something went wrong", "-----------------------------", "" };
+                    string[] s2 = { "Data resize problem", "Something went wrong", "-----------------------------", "" };
                     lw.Write(s2);
                 }
-
+                progressBar1.Value = 0;
                 btnEnable();
-                Close();
             }
             catch (Exception ex)
             {

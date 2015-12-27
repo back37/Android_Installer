@@ -63,9 +63,9 @@
             this.radioButton2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.radioButton2.Location = new System.Drawing.Point(8, 26);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(120, 24);
+            this.radioButton2.Size = new System.Drawing.Size(112, 24);
             this.radioButton2.TabIndex = 1;
-            this.radioButton2.Text = "Custom image";
+            this.radioButton2.Text = "Custom build";
             this.radioButton2.UseVisualStyleBackColor = true;
             this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
             this.radioButton2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);

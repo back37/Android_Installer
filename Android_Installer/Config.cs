@@ -92,6 +92,8 @@ namespace Android_Installer
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 textBox1.Text = openFileDialog1.FileName;
+                textBox1.SelectionStart = textBox1.Text.Length - 1;
+                textBox1.SelectionLength = 0;
             }
         }
     }

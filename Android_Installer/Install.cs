@@ -16,13 +16,10 @@ namespace Android_Installer
             StreamWriter BatFile1 = new StreamWriter(@"Bin\1.bat", false, Encoding.GetEncoding(1251));
             BatFile1.WriteLine("echo off");
             BatFile1.WriteLine("chcp 1251");
-            BatFile1.WriteLine("Bin\\7z.exe x \"" + p + "\" -o" + boot + "\\Android *system* >> \"" + Directory.GetCurrentDirectory() + @"\log.txt""");
-            BatFile1.WriteLine("Bin\\7z.exe x \"" + p + "\" -o" + boot + "\\Android *install.img >> \"" + Directory.GetCurrentDirectory() + @"\log.txt""");
-            BatFile1.WriteLine("Bin\\7z.exe x \"" + p + "\" -o" + boot + "\\Android *initrd.img >> \"" + Directory.GetCurrentDirectory() + @"\log.txt""");
-            BatFile1.WriteLine("Bin\\7z.exe x \"" + p + "\" -o" + boot + "\\Android *kernel >> \"" + Directory.GetCurrentDirectory() + @"\log.txt""");
-            BatFile1.WriteLine("Bin\\7z.exe x \"" + p + "\" -o" + boot + "\\Android *ramdisk.img >> \"" + Directory.GetCurrentDirectory() + @"\log.txt""");
+            BatFile1.WriteLine("Bin\\7z.exe e \"" + p + "\" -o" + boot + "\\Android *system* *install.img *initrd.img *kernel *ramdisk.img");
             if (checkBox2.Checked)
-                BatFile1.WriteLine("Bin\\7z.exe x \"" + p + "\" -o" + boot + "\\Android *data.img >> \"" + Directory.GetCurrentDirectory() + @"\log.txt""");
+                BatFile1.Write(" *data.img");
+			BatFile1.Write(" >> \"" + Directory.GetCurrentDirectory() + @"\log.txt""");
             BatFile1.WriteLine("echo. >> \"" + Directory.GetCurrentDirectory() + @"\log.txt""");
             BatFile1.WriteLine(@"del Bin\1.bat");
             BatFile1.Close();
@@ -41,9 +38,9 @@ namespace Android_Installer
                     File.Copy(Directory.GetCurrentDirectory() + @"\Android\OS\data.img", boot + @"\Android\data.img", true);
                 else
                 {
-                    Message M1 = new Message("Error!", "Data not found\nPlease make data resize after install", "Ok", null, null, 1, 30);
+                    Message M1 = new Message("Attention!", "Data not found\nPlease make data resize after install", "Ok", null, null, 1, 30);
                     M1.ShowDialog(this);
-                    string[] s4 = { "Error - Data not found!", "" };
+                    string[] s4 = { "Attention - Data not found!", "" };
                     lw.Write(s4);
                 }
             }
@@ -126,8 +123,8 @@ namespace Android_Installer
                 }
             }
             else {
-                if (Directory.Exists(ph))
-                { CopyDirectory(ph, boot + @"\Android", true); }
+                if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\OS"))
+                { CopyDirectory(Directory.GetCurrentDirectory() + @"\Android\OS", boot + @"\Android", true); }
                 else
                 {
                     stopWatch.Stop();
@@ -176,12 +173,13 @@ namespace Android_Installer
                         File.Move(boot + @"\Android\data.img", boot + @"\data.img");
 
                     Directory.Delete(boot + @"\Android", true);
-                    if (File.Exists(boot + @"\data.img"))
-                        File.Move(boot + @"\data.img", boot + @"\Android\data.img");
                 }
                 else
                     Directory.Delete(boot + @"\Android", true);
             }
+
+            if (Directory.Exists(boot + @"\Android") == false)
+                Directory.CreateDirectory(boot + @"\Android");
 
             if (pl != "default" && pl != "" && pl != null)
             {
@@ -209,6 +207,11 @@ namespace Android_Installer
 
                     return;
                 }
+            }
+
+            if (File.Exists(boot + @"\data.img"))
+            {
+                File.Move(boot + @"\data.img", boot + @"\Android\data.img");
             }
 
             st = 40;
