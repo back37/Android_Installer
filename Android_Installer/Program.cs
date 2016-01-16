@@ -14,7 +14,7 @@ namespace Android_Installer
         /// </summary>
         [STAThread]
 
-        static void Main()
+        static void Main(String[] args)
         {
             LogWriter lw = new LogWriter();
 
@@ -43,7 +43,7 @@ namespace Android_Installer
                 AppDomain.CurrentDomain.AppendPrivatePath(@"Bin");
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new Main());
+                Application.Run(new Main(args));
             }
             else
             {

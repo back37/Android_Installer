@@ -53,9 +53,9 @@ namespace Android_Installer
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Impact", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button1.Location = new System.Drawing.Point(21, 86);
+            this.button1.Location = new System.Drawing.Point(24, 88);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(239, 48);
+            this.button1.Size = new System.Drawing.Size(233, 44);
             this.button1.TabIndex = 1;
             this.button1.Text = "Android Install";
             this.button1.UseVisualStyleBackColor = false;
@@ -73,7 +73,6 @@ namespace Android_Installer
             this.button2.Location = new System.Drawing.Point(21, 32);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(239, 48);
-            
             this.button2.TabIndex = 0;
             this.button2.Text = "Data resize";
             this.button2.UseVisualStyleBackColor = false;
@@ -187,12 +186,12 @@ namespace Android_Installer
             this.button7.Font = new System.Drawing.Font("Impact", 5F, System.Drawing.FontStyle.Bold);
             this.button7.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.button7.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.button7.Location = new System.Drawing.Point(232, 86);
+            this.button7.Location = new System.Drawing.Point(21, 86);
             this.button7.Name = "button7";
-            this.button7.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.button7.Size = new System.Drawing.Size(28, 48);
+            this.button7.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.button7.Size = new System.Drawing.Size(239, 48);
             this.button7.TabIndex = 13;
-            this.button7.Text = "      .\r\n    .\r\n  .\r\n";
+            this.button7.Text = ".\r\n  .\r\n    .";
             this.button7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button7.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.button7.UseMnemonic = false;

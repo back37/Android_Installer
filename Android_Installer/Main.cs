@@ -194,7 +194,7 @@ namespace Android_Installer
             }
         }
 
-        public Main()
+        public Main(String[] args)
         {
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
@@ -204,10 +204,19 @@ namespace Android_Installer
             p[0] = new Point(0, 0);
             p[1] = new Point(0, 48);
             p[2] = new Point(210, 48);
-            p[3] = new Point(239, 0);
+            p[3] = new Point(233, 0);
             path.AddPolygon(p);
             Region rgn = new Region(path);
             button1.Region = rgn;
+
+            if (args.Length > 0)
+            {
+                txt = args[0];
+                en = false;
+
+                string[] s = { "Open at start", "Android: " + txt, "-----------------------------", "" };
+                lw.Write(s);
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
