@@ -154,12 +154,13 @@ namespace Android_Installer
 
         private void вырезатьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            richTextBox1.Cut();
+            Clipboard.SetText(richTextBox1.SelectedText);
+            SendKeys.Send("{DEL}");
         }
 
         private void копироватьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            richTextBox1.Copy();
+            Clipboard.SetText(richTextBox1.SelectedText);
         }
 
         private void вставитьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -170,22 +171,6 @@ namespace Android_Installer
         private void выделитьВсёToolStripMenuItem_Click(object sender, EventArgs e)
         {
             richTextBox1.SelectAll();
-        }
-
-        private void richTextBox1_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Control && e.KeyCode == Keys.C)
-            {
-                richTextBox1.Copy();
-            }
-            if (e.Control && e.KeyCode == Keys.X)
-            {
-                richTextBox1.Cut();
-            }
-            if (e.Control && e.KeyCode == Keys.V)
-            {
-                richTextBox1.Cut();
-            }
         }
 
         private void toolStripMenuItem7_Click(object sender, EventArgs e)
@@ -380,6 +365,58 @@ namespace Android_Installer
                 string[] s2 = { "", "Config editor error", ex.ToString(), "-----------------------------", "" };
                 lw.Write(s2);
                 Close();
+            }
+        }
+
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (richTextBox1.SelectionLength < 1)
+            {
+                копироватьToolStripMenuItem.Enabled = false;
+                вырезатьToolStripMenuItem.Enabled = false;
+                toolStripMenuItem7.Enabled = false;
+            }
+            else
+            {
+                копироватьToolStripMenuItem.Enabled = true;
+                вырезатьToolStripMenuItem.Enabled = true;
+                toolStripMenuItem7.Enabled = true;
+            }
+
+            if (richTextBox1.Modified)
+            {
+                toolStripMenuItem5.Enabled = true;
+            }
+            else
+            {
+                toolStripMenuItem5.Enabled = false;
+                toolStripMenuItem6.Enabled = false;
+            }
+        }
+
+        private void menuStrip1_Click(object sender, EventArgs e)
+        {
+            if (richTextBox1.SelectionLength < 1)
+            {
+                копироватьToolStripMenuItem1.Enabled = false;
+                вырезатьToolStripMenuItem1.Enabled = false;
+                toolStripMenuItem8.Enabled = false;
+            }
+            else
+            {
+                копироватьToolStripMenuItem1.Enabled = true;
+                вырезатьToolStripMenuItem1.Enabled = true;
+                toolStripMenuItem8.Enabled = true;
+            }
+
+            if (richTextBox1.Modified)
+            {
+                toolStripMenuItem3.Enabled = true;
+            }
+            else
+            {
+                toolStripMenuItem3.Enabled = false;
+                toolStripMenuItem4.Enabled = false;
             }
         }
     }

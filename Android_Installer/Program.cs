@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.IO;
 using System.Management;
+using System.Reflection;
 
 namespace Android_Installer
 {
@@ -16,6 +17,8 @@ namespace Android_Installer
 
         static void Main(String[] args)
         {
+            Directory.SetCurrentDirectory(Application.StartupPath);
+
             LogWriter lw = new LogWriter();
 
             ManagementObjectSearcher searcher8 = new ManagementObjectSearcher("root\\CIMV2","SELECT * FROM Win32_Processor");
@@ -37,7 +40,7 @@ namespace Android_Installer
 
             string[] s = { DateTime.Now.ToString("dd.MM.yy HH-mm-ss") + " Program Version: " + Application.ProductVersion, "-----------------------------", c,r, "-----------------------------", "" };
             lw.Write(s);
-
+            
             if (Directory.Exists(@"Bin"))
             {
                 AppDomain.CurrentDomain.AppendPrivatePath(@"Bin");

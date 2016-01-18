@@ -198,6 +198,7 @@ namespace Android_Installer
         {
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
+            label1.Text = Application.ProductVersion;
 
             System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
             Point[] p = new Point[4];
@@ -209,14 +210,22 @@ namespace Android_Installer
             Region rgn = new Region(path);
             button1.Region = rgn;
 
-            if (args.Length > 0)
-            {
-                txt = args[0];
-                en = false;
+            label1.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+            label1.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
+            label2.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+            label2.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
+            progressBar1.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+            progressBar1.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
 
-                string[] s = { "Open at start", "Android: " + txt, "-----------------------------", "" };
-                lw.Write(s);
-            }
+            if (args.Length > 0)
+                if (args[0].EndsWith(".iso")|| args[0].EndsWith(".img") || args[0].EndsWith(".7z") || args[0].EndsWith(".rar") || args[0].EndsWith(".zip") || args[0].EndsWith(".tar"))
+                {
+                    txt = args[0];
+                    en = false;
+
+                    string[] s = { "Open at start", "Android: " + txt,"", "-----------------------------", "" };
+                    lw.Write(s);
+                }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -316,6 +325,14 @@ namespace Android_Installer
 
             en = f5.ch;
             txt = f5.text;
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            string[] s7 = { "About", "-----------------------------" };
+            lw.Write(s7);
+            About f7 = new About();
+            f7.Show(this);
         }
     }
 }

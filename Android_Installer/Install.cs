@@ -364,13 +364,36 @@ namespace Android_Installer
             try {
                 string n = @"rEFInd Boot Manager";
                 string pt = @"\EFI\refind\refind_ia32.efi";
-
+                
                 if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Android\Bootloader"))
                 {
-                    var dir = new DirectoryInfo(Directory.GetCurrentDirectory() + @"\Android\Bootloader");
+                    DirectoryInfo dir;
+
+                    if (pl.Contains("remix") || pl.Contains("Remix") || pl.Contains("REMIX"))
+                    {
+                        string[] st = { "RemixOS build founded" };
+                        lw.Write(st);
+
+                        if (File.Exists(Directory.GetCurrentDirectory() + @"\Android\Remix\grub.cfg"))
+                        {
+                            string[] st1 = { "RemixOS grub.cfg founded" };
+                            lw.Write(st1);
+                            dir = new DirectoryInfo(Directory.GetCurrentDirectory() + @"\Android\Remix");
+                        }
+                        else
+                            dir = new DirectoryInfo(Directory.GetCurrentDirectory() + @"\Android\Bootloader");
+                    }
+                    else
+                        dir = new DirectoryInfo(Directory.GetCurrentDirectory() + @"\Android\Bootloader");
+
                     foreach (FileInfo file0 in dir.GetFiles("grub.cfg", SearchOption.AllDirectories))
                     {
                         grub = file0.FullName;
+
+                        if (File.Exists(Directory.GetCurrentDirectory() + @"\Android\Remix\grub.cfg") && (pl.Contains("remix") || pl.Contains("Remix") || pl.Contains("REMIX")))
+                        {
+                            re = grub;
+                        }
 
                         if (File.Exists(path + @"\system.img") || File.Exists(path + @"\system.sfs"))
                         {
@@ -423,6 +446,15 @@ namespace Android_Installer
                     }
 
                     CopyDirectory(Directory.GetCurrentDirectory() + @"\Android\Bootloader", p,true);
+
+                    if (File.Exists(Directory.GetCurrentDirectory() + @"\Android\Remix\grub.cfg") && (pl.Contains("remix") || pl.Contains("Remix") || pl.Contains("REMIX")))
+                    {
+                        var dr = new DirectoryInfo(p + "\\boot");
+                        foreach (FileInfo fileD in dr.GetFiles("grub.cfg", SearchOption.AllDirectories))
+                        {
+                            File.Copy(re, fileD.FullName, true);
+                        }
+                    }
 
                     if (checkBox1.Checked)
                     {
@@ -483,6 +515,7 @@ namespace Android_Installer
         string sys = "";
         string grub = "";
         string p = "";
+        string re = "";
         int st = 0;
         string pl = "";
         LogWriter lw = new LogWriter();
