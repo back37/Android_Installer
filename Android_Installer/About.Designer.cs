@@ -34,11 +34,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.richTextBoxEx1 = new RichTextBoxLinks.RichTextBoxEx();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.richTextBox3 = new System.Windows.Forms.RichTextBox();
-            this.richTextBoxEx1 = new RichTextBoxLinks.RichTextBoxEx();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -117,6 +117,21 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Program";
             // 
+            // richTextBoxEx1
+            // 
+            this.richTextBoxEx1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(26)))));
+            this.richTextBoxEx1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBoxEx1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBoxEx1.Font = new System.Drawing.Font("Lucida Sans Unicode", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.richTextBoxEx1.ForeColor = System.Drawing.SystemColors.Window;
+            this.richTextBoxEx1.Location = new System.Drawing.Point(3, 3);
+            this.richTextBoxEx1.Name = "richTextBoxEx1";
+            this.richTextBoxEx1.ReadOnly = true;
+            this.richTextBoxEx1.Size = new System.Drawing.Size(511, 242);
+            this.richTextBoxEx1.TabIndex = 2;
+            this.richTextBoxEx1.Text = resources.GetString("richTextBoxEx1.Text");
+            this.richTextBoxEx1.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.richTextBox1_LinkClicked);
+            // 
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(26)))));
@@ -165,21 +180,6 @@
             this.richTextBox3.Size = new System.Drawing.Size(511, 242);
             this.richTextBox3.TabIndex = 1;
             this.richTextBox3.Text = resources.GetString("richTextBox3.Text");
-            // 
-            // richTextBoxEx1
-            // 
-            this.richTextBoxEx1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(26)))));
-            this.richTextBoxEx1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBoxEx1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBoxEx1.Font = new System.Drawing.Font("Lucida Sans Unicode", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.richTextBoxEx1.ForeColor = System.Drawing.SystemColors.Window;
-            this.richTextBoxEx1.Location = new System.Drawing.Point(3, 3);
-            this.richTextBoxEx1.Name = "richTextBoxEx1";
-            this.richTextBoxEx1.ReadOnly = true;
-            this.richTextBoxEx1.Size = new System.Drawing.Size(511, 242);
-            this.richTextBoxEx1.TabIndex = 2;
-            this.richTextBoxEx1.Text = resources.GetString("richTextBoxEx1.Text");
-            this.richTextBoxEx1.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.richTextBox1_LinkClicked);
             // 
             // About
             // 

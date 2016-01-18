@@ -119,12 +119,12 @@
   </resheader>
   <data name="richTextBoxEx1.Text" xml:space="preserve">
     <value>This program created with MS Visual Studio C# and have only one mission - make Android installing more easy, without some partition making or resizing.
-Yes, used by my program method have some disadvantages, but it more optimal while Android-X86 have some problems and can't be used as main system.
+Yes, used method have some disadvantages, but it more optimal while Android-X86 have some problems and can't be used as main system.
 From the beginning this program still have only one developer - me, and i continue developing while have a time and some ideas, so i make it opensource that everyone could continue my development when i stop it.</value>
   </data>
   <data name="richTextBox2.Text" xml:space="preserve">
     <value>Firstly it's of cource thanks to AndroidX86 and Asus T100 Community for Android buildis. 
-Special to Chih-Wei Huang and Povilas Staniulis - without this guys we could not even get that Android compatibility with Asus T100 and other BayTrail-T tablets, which we have now.
+Special to Chih-Wei Huang and Povilas Staniulis - without these guys we could not even get that Android compatibility with Asus T100 and other BayTrail-T tablets, which we have now.
 To mercus (4PDA.RU user) - for making first working version of cmd script the principles of which i start to develop this program, and for working bootloader that still used by program.
 To And_pda (4PDA.RU user) - he makes tool for creating ext4 images, without it one of main functions of my program would not have been implemented.
 To NDeaz, manowar123 (also 4PDA.RU users) - testers of the first builds.

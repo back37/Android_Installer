@@ -85,7 +85,7 @@ namespace Android_Installer
                                 //MessageBox.Show("Bootloader not found");
                                 Message M = new Message("Error!", "Bootloader not found", "Ok", null, null, 1, 30);
                                 M.ShowDialog(this);
-                                string[] s4 = { "Bootloader not found","" };
+                                string[] s4 = { "Bootloader not found", "" };
                                 lw.Write(s4);
                                 Close();
                                 return;
