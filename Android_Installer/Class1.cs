@@ -22,7 +22,7 @@ namespace Android_Installer
                 {
                     str = reader.ReadToEnd();
                 }
-                str = str.Replace("\n", Environment.NewLine);
+                str = str.Replace("\r", "").Replace("\n", Environment.NewLine);
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter("log.txt", false, Encoding.GetEncoding(1251)))
                 {
                     file.Write(str);
