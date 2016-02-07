@@ -54,7 +54,7 @@ namespace Android_Installer
 
                     Process ef = new Process();
                     StreamWriter BatFile3 = new StreamWriter(@"Bin\3.bat", false, Encoding.GetEncoding(1251));
-                    BatFile3.WriteLine("chcp 1251");
+                    BatFile3.WriteLine("@chcp 1251 > nul");
                     BatFile3.WriteLine(@"echo Delete booltloader");
                     BatFile3.WriteLine(@"echo Set path \EFI\Microsoft\Boot\bootmgfw.efi");
                     BatFile3.WriteLine(@"bcdedit /set {bootmgr} path \EFI\Microsoft\Boot\bootmgfw.efi");
@@ -94,8 +94,8 @@ namespace Android_Installer
                     else
                     {
                         StreamWriter BatFile2 = new StreamWriter(@"Bin\2.bat", false, Encoding.GetEncoding(1251));
-                        BatFile2.WriteLine("echo off");
-                        BatFile2.WriteLine("chcp 1251");
+                        BatFile2.WriteLine("@echo off > nul");
+                        BatFile2.WriteLine("@chcp 1251 > nul");
                         BatFile2.WriteLine(@"echo Try to mount S");
                         BatFile2.WriteLine(@"mountvol S: /S ");
                         BatFile2.WriteLine(@"dir S:\");

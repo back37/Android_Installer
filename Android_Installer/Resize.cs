@@ -158,8 +158,8 @@ namespace Android_Installer
                     }
 
                     StreamWriter BatFile2 = new StreamWriter(@"Bin\temp.bat", false, Encoding.GetEncoding(1251));
-                    BatFile2.WriteLine(@"echo off");
-                    BatFile2.WriteLine("chcp 1251");
+                    BatFile2.WriteLine(@"@echo off > nul");
+                    BatFile2.WriteLine("@chcp 1251 > nul");
                     BatFile2.WriteLine(@"echo Data Resize >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                     BatFile2.WriteLine("cd \"" + Directory.GetCurrentDirectory() + @"\Bin"" >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
                     BatFile2.WriteLine(@"tfile.exe data.img 1 >> """ + Directory.GetCurrentDirectory() + @"\log.txt""");
@@ -270,7 +270,7 @@ namespace Android_Installer
                     {
                         file.Write(str);
                     }
-
+                    
                     st = (60);
 
                     Thread newThread = new Thread(start);

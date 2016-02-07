@@ -8,19 +8,25 @@ using System.Threading;
 
 namespace Android_Installer
 {
+    public class EfiNotExistException : System.Exception
+    {
+
+    }
+
     public partial class Install : Form
     {
+
         public void unpack(string p)
         {
             Process pc = new Process();
             StreamWriter BatFile1 = new StreamWriter(@"Bin\1.bat", false, Encoding.GetEncoding(1251));
-            BatFile1.WriteLine("echo off");
-            BatFile1.WriteLine("chcp 1251");
+            BatFile1.WriteLine("@echo off > nul");
+            BatFile1.WriteLine("@chcp 1251 > nul");
             BatFile1.WriteLine("Bin\\7z.exe e \"" + p + "\" -o" + boot + "\\Android *system* *install.img *initrd.img *kernel *ramdisk.img");
             if (checkBox2.Checked)
                 BatFile1.Write(" *data.img");
-			BatFile1.Write(" >> \"" + Directory.GetCurrentDirectory() + @"\log.txt""");
-            BatFile1.WriteLine("echo. >> \"" + Directory.GetCurrentDirectory() + @"\log.txt""");
+			//BatFile1.Write(" >> \"" + Directory.GetCurrentDirectory() + @"\log.txt""");
+            BatFile1.WriteLine("echo.");
             BatFile1.WriteLine(@"del Bin\1.bat");
             BatFile1.Close();
 
@@ -28,8 +34,13 @@ namespace Android_Installer
             pc.StartInfo.FileName = @"Bin\1.bat";
             pc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             pc.EnableRaisingEvents = true;
-            //pc.StartInfo.CreateNoWindow = true;
+            pc.StartInfo.RedirectStandardOutput = true;
+            pc.StartInfo.UseShellExecute = false;
+            pc.StartInfo.CreateNoWindow = true;
             pc.Start();
+            StreamReader srIncoming = pc.StandardOutput;
+            string[] s6 = { srIncoming.ReadToEnd() };
+            lw.Write(s6);
             pc.WaitForExit();
 
             if (File.Exists(boot + @"\Android\data.img") == false && checkBox2.Checked)
@@ -38,10 +49,12 @@ namespace Android_Installer
                     File.Copy(Directory.GetCurrentDirectory() + @"\Android\OS\data.img", boot + @"\Android\data.img", true);
                 else
                 {
+                    stopWatch.Stop();
                     Message M1 = new Message("Attention!", "Data not found\nPlease make data resize after install", "Ok", null, null, 1, 30);
                     M1.ShowDialog(this);
                     string[] s4 = { "Attention - Data not found!", "" };
                     lw.Write(s4);
+                    stopWatch.Start();
                 }
             }
                     
@@ -68,8 +81,8 @@ namespace Android_Installer
 
             Process pc = new Process();
             StreamWriter BatFile1 = new StreamWriter(@"Bin\1.bat", false, Encoding.GetEncoding(1251));
-            BatFile1.WriteLine("echo off");
-            BatFile1.WriteLine("chcp 1251");
+            BatFile1.WriteLine("@echo off > nul");
+            BatFile1.WriteLine("@chcp 1251 > nul");
             BatFile1.WriteLine(@"echo Disable Bitlocker");
             BatFile1.WriteLine(@"cd %WINDIR%\System32");
             BatFile1.WriteLine(@"cscript %WINDIR%\System32\manage-bde.wsf");
@@ -328,6 +341,7 @@ namespace Android_Installer
                     string[] s4 = { "Error - EFI not found!", "-----------------------------", "" };
                     lw.Write(s4);
                     Close();
+                    throw new EfiNotExistException();
                     return;
                 }
             }
@@ -337,8 +351,8 @@ namespace Android_Installer
         {
             Process efi = new Process();
             StreamWriter BatFile2 = new StreamWriter(@"Bin\2.bat", false, Encoding.GetEncoding(1251));
-            BatFile2.WriteLine("echo off");
-            BatFile2.WriteLine("chcp 1251");
+            BatFile2.WriteLine("@echo off > nul");
+            BatFile2.WriteLine("@chcp 1251 > nul");
             BatFile2.WriteLine(@"echo Try to mount S");
             BatFile2.WriteLine(@"mountvol S: /S ");
             BatFile2.WriteLine(@"dir S:\");
@@ -464,8 +478,8 @@ namespace Android_Installer
 
                     Process ef = new Process();
                     StreamWriter BatFile3 = new StreamWriter(@"Bin\3.bat", false, Encoding.GetEncoding(1251));
-                    BatFile3.WriteLine("echo off");
-                    BatFile3.WriteLine("chcp 1251");
+                    BatFile3.WriteLine("@echo off > nul");
+                    BatFile3.WriteLine("@chcp 1251 > nul");
                     BatFile3.WriteLine(@"echo Install booltloader");
                     BatFile3.WriteLine(@"echo Set path " + pt);
                     BatFile3.WriteLine(@"bcdedit /set {bootmgr} path " + pt);
@@ -506,9 +520,10 @@ namespace Android_Installer
                 M.ShowDialog(this);
                 string[] s2 = { "Android install error", ex.ToString(), "-----------------------------", "" };
                 lw.Write(s2);
+                throw new EfiNotExistException();
             }
         }
-
+        
         Stopwatch stopWatch = new Stopwatch();
         string name = "";
         Point last;
@@ -670,6 +685,16 @@ namespace Android_Installer
                     }
                 }
          }
+
+            catch (EfiNotExistException Exts)
+            {
+                string[] s = { "Android install canceled", "-----------------------------", "" };
+                lw.Write(s);
+
+                btnEnable();
+                Close();
+            }
+
             catch (Exception ex)
             {
                 /*MessageBox.Show("Error!\nMore: log.txt");*/

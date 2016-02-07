@@ -1,4 +1,4 @@
-echo off
+@@echo off > nul
 if "%1"=="" exit
 mode con lines=35
 

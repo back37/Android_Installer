@@ -48,8 +48,8 @@ namespace Android_Installer
                     else
                     {
                         StreamWriter BatFile2 = new StreamWriter(@"Bin\2.bat", false, Encoding.GetEncoding(1251));
-                        BatFile2.WriteLine("echo off");
-                        BatFile2.WriteLine("chcp 1251");
+                        BatFile2.WriteLine("@echo off > nul");
+                        BatFile2.WriteLine("@chcp 1251 > nul");
                         BatFile2.WriteLine(@"echo Try to mount S");
                         BatFile2.WriteLine(@"mountvol S: /S ");
                         BatFile2.WriteLine(@"dir S:\");
