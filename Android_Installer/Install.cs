@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace Android_Installer
 {
-    public class EfiNotExistException : System.Exception
+    public class EfiNotExistException : Exception
     {
 
     }
@@ -438,6 +438,10 @@ namespace Android_Installer
                                 else {
                                     str = str.Replace("system.img", sys).Replace("system.sfs", sys).Replace("/android", "/Android");
                                 }
+
+                                if ((pl.Contains("x64") || pl.Contains("X64"))&& (pl.Contains("remix") == false || pl.Contains("Remix") == false || pl.Contains("REMIX") == false))
+                                    str = str.Replace("android_x86_64", "android_x86").Replace("android_x86", "android_x86_64");
+
                                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(grub, false, Encoding.ASCII))
                                 {
                                     file.Write(str);
