@@ -245,13 +245,20 @@ namespace Android_Installer
                             sys = file1.Name;
 
                             string str = string.Empty;
-                            using (System.IO.StreamReader reader = new System.IO.StreamReader(grub, Encoding.ASCII, true))
+                            using (StreamReader reader = new StreamReader(grub, Encoding.ASCII, true))
                             {
                                 str = reader.ReadToEnd();
                             }
                             str = str.Replace("system.img", sys).Replace("system.sfs", sys).Replace("/android", "/" + name).Replace("/Android", "/" + name);
 
-                            using (System.IO.StreamWriter file = new System.IO.StreamWriter(grub, false, Encoding.ASCII))
+                            if (pl.Contains("64") && (pl.Contains("remix") == false || pl.Contains("Remix") == false || pl.Contains("REMIX") == false))
+                            {
+                                str = str.Replace("android_x86_64", "android_x86").Replace("android_x86", "android_x86_64");
+                                string[] st15 = { "64bit OS founded" };
+                                lw.Write(st15);
+                            }
+
+                            using (StreamWriter file = new StreamWriter(grub, false, Encoding.ASCII))
                             {
                                 file.Write(str);
                             }
@@ -416,7 +423,7 @@ namespace Android_Installer
                             {
                                 sys = file1.Name;
                                 string str = string.Empty;
-                                using (System.IO.StreamReader reader = new System.IO.StreamReader(grub, Encoding.ASCII, true))
+                                using (StreamReader reader = new StreamReader(grub, Encoding.ASCII, true))
                                 {
                                     str = reader.ReadToEnd();
                                 }
@@ -439,10 +446,14 @@ namespace Android_Installer
                                     str = str.Replace("system.img", sys).Replace("system.sfs", sys).Replace("/android", "/Android");
                                 }
 
-                                if ((pl.Contains("x64") || pl.Contains("X64"))&& (pl.Contains("remix") == false || pl.Contains("Remix") == false || pl.Contains("REMIX") == false))
+                                if (pl.Contains("64") && (pl.Contains("remix") == false || pl.Contains("Remix") == false || pl.Contains("REMIX") == false))
+                                {
                                     str = str.Replace("android_x86_64", "android_x86").Replace("android_x86", "android_x86_64");
+                                    string[] st15 = { "64bit OS founded" };
+                                    lw.Write(st15);
+                                }
 
-                                using (System.IO.StreamWriter file = new System.IO.StreamWriter(grub, false, Encoding.ASCII))
+                                using (StreamWriter file = new StreamWriter(grub, false, Encoding.ASCII))
                                 {
                                     file.Write(str);
                                 }
@@ -590,20 +601,20 @@ namespace Android_Installer
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
 
-            groupBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-            groupBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-            groupBox2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-            groupBox2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-            label2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-            label2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-            progressBar1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-            progressBar1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-            radioButton1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-            radioButton1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-            radioButton2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-            radioButton2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-            radioButton3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-            radioButton3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
+            groupBox1.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+            groupBox1.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
+            groupBox2.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+            groupBox2.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
+            label2.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+            label2.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
+            progressBar1.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+            progressBar1.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
+            radioButton1.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+            radioButton1.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
+            radioButton2.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+            radioButton2.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
+            radioButton3.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+            radioButton3.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
 
             radioButton1.Checked = true;
             radioButton2.Enabled = false;

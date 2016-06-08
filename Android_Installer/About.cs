@@ -13,20 +13,20 @@ namespace Android_Installer
         {
             InitializeComponent();
 
-            label1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-            label1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-            tabPage1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-            tabPage1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-            tabPage2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-            tabPage2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-            tabPage3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-            tabPage3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-            richTextBoxEx1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-            richTextBoxEx1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-            richTextBox2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-            richTextBox2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-            richTextBox3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-            richTextBox3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
+            label1.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+            label1.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
+            tabPage1.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+            tabPage1.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
+            tabPage2.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+            tabPage2.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
+            tabPage3.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+            tabPage3.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
+            richTextBoxEx1.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+            richTextBoxEx1.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
+            richTextBox2.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+            richTextBox2.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
+            richTextBox3.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+            richTextBox3.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
 
             label1.Text = "Android installer: " + Application.ProductVersion;
 

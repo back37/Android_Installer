@@ -35,16 +35,16 @@ namespace Android_Installer
             {
                 InitializeComponent();
 
-                label1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-                label1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-                label2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-                label2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-                progressBar1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-                progressBar1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-                radioButton1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-                radioButton1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-                radioButton2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-                radioButton2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
+                label1.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+                label1.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
+                label2.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+                label2.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
+                progressBar1.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+                progressBar1.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
+                radioButton1.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+                radioButton1.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
+                radioButton2.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+                radioButton2.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
 
                 CheckForIllegalCrossThreadCalls = false;
 
@@ -234,7 +234,7 @@ namespace Android_Installer
 
                     Process efi = new Process();
                     string str = string.Empty;
-                    using (System.IO.StreamReader reader = new System.IO.StreamReader(@"Bin\CreateEXT4.bat", true))
+                    using (StreamReader reader = new StreamReader(@"Bin\CreateEXT4.bat", true))
                     {
                         str = reader.ReadToEnd();
                     }
@@ -266,7 +266,7 @@ namespace Android_Installer
 
                     st = (40);
 
-                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"Bin\temp.bat", false))
+                    using (StreamWriter file = new StreamWriter(@"Bin\temp.bat", false))
                     {
                         file.Write(str);
                     }

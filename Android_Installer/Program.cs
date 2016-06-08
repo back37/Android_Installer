@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using System.IO;
 using System.Management;
-using System.Reflection;
 
 namespace Android_Installer
 {
@@ -34,8 +31,8 @@ namespace Android_Installer
             ManagementObjectSearcher searcher12 = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_OperatingSystem");
             foreach (ManagementObject queryObj in searcher12.Get())
             {
-                r = "RAM: " + Math.Round(System.Convert.ToDouble(queryObj["TotalVisibleMemorySize"])/1024) + "mb";
-                r +=" Free: " + Math.Round(System.Convert.ToDouble(queryObj["FreePhysicalMemory"]) / 1024) + "mb";
+                r = "RAM: " + Math.Round(Convert.ToDouble(queryObj["TotalVisibleMemorySize"])/1024) + "mb";
+                r +=" Free: " + Math.Round(Convert.ToDouble(queryObj["FreePhysicalMemory"]) / 1024) + "mb";
             }
 
             string[] s = { DateTime.Now.ToString("dd.MM.yy HH-mm-ss") + " Program Version: " + Application.ProductVersion, "-----------------------------", c,r, "-----------------------------", "" };

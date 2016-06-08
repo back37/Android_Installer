@@ -16,12 +16,12 @@ namespace Android_Installer
         {
             InitializeComponent();
 
-            groupBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-            groupBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-            label1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-            label1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-            label3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-            label3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
+            groupBox1.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+            groupBox1.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
+            label1.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+            label1.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
+            label3.MouseDown += new MouseEventHandler(this.Form1_MouseDown);
+            label3.MouseMove += new MouseEventHandler(this.Form1_MouseMove);
 
 
             Timer = f = J;

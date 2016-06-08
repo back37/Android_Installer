@@ -246,8 +246,8 @@ namespace Android_Installer
                 sw.Close();
             }
 
-            System.IO.StreamReader streamReader;
-            streamReader = new System.IO.StreamReader(p + @"\" + comboBox1.SelectedItem.ToString(), Encoding.ASCII, true);
+            StreamReader streamReader;
+            streamReader = new StreamReader(p + @"\" + comboBox1.SelectedItem.ToString(), Encoding.ASCII, true);
             while (streamReader.EndOfStream == false)
             {
                 richTextBox1.Text = streamReader.ReadToEnd();
@@ -349,8 +349,8 @@ namespace Android_Installer
                 string[] s1 = { comboBox1.SelectedItem.ToString() + " - selected", };
                 lw.Write(s1);
 
-                System.IO.StreamReader streamReader;
-                streamReader = new System.IO.StreamReader(p + @"\" + comboBox1.SelectedItem.ToString(), Encoding.ASCII, true);
+                StreamReader streamReader;
+                streamReader = new StreamReader(p + @"\" + comboBox1.SelectedItem.ToString(), Encoding.ASCII, true);
                 while (streamReader.EndOfStream == false)
                 {
                     richTextBox1.Text = streamReader.ReadToEnd();
