@@ -319,6 +319,8 @@ namespace Android_Installer
                     M1.ShowDialog(this);
                     string[] s3 = { "", "Runtime: " + label2.Text, "", "Resize successful", "-----------------------------", "" };
                     lw.Write(s3);
+
+                    Close();
                 }
                 else
                 {
