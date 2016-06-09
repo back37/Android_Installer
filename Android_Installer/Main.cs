@@ -10,8 +10,8 @@ namespace Android_Installer
 {
     public partial class Main : Form
     {
-        Boolean en = true;
-        string txt = "default";
+        public Boolean en = true;
+        public string txt = "default";
         
         Stopwatch stopWatch = new Stopwatch();
         Point last;

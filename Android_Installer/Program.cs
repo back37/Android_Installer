@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using System.IO;
 using System.Management;
+using System.Diagnostics;
 
 namespace Android_Installer
 {
@@ -18,7 +19,15 @@ namespace Android_Installer
 
             LogWriter lw = new LogWriter();
 
-            ManagementObjectSearcher searcher8 = new ManagementObjectSearcher("root\\CIMV2","SELECT * FROM Win32_Processor");
+            int pid = Process.GetCurrentProcess().Id;
+            Process[] proc = Process.GetProcesses();
+            foreach (Process process in proc)
+                if (process.ProcessName == "Android_Installer" && process.Id != pid)
+                {
+                    process.Kill();
+                }
+
+            ManagementObjectSearcher searcher8 = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_Processor");
 
             string c = "";
             foreach (ManagementObject queryObj in searcher8.Get())
@@ -31,13 +40,15 @@ namespace Android_Installer
             ManagementObjectSearcher searcher12 = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_OperatingSystem");
             foreach (ManagementObject queryObj in searcher12.Get())
             {
-                r = "RAM: " + Math.Round(Convert.ToDouble(queryObj["TotalVisibleMemorySize"])/1024) + "mb";
-                r +=" Free: " + Math.Round(Convert.ToDouble(queryObj["FreePhysicalMemory"]) / 1024) + "mb";
+                r = "RAM: " + Math.Round(Convert.ToDouble(queryObj["TotalVisibleMemorySize"]) / 1024) + "mb";
+                r += " Free: " + Math.Round(Convert.ToDouble(queryObj["FreePhysicalMemory"]) / 1024) + "mb";
             }
 
-            string[] s = { DateTime.Now.ToString("dd.MM.yy HH-mm-ss") + " Program Version: " + Application.ProductVersion, "-----------------------------", c,r, "-----------------------------", "" };
+            string[] s = { DateTime.Now.ToString("dd.MM.yy HH-mm-ss") + " Program Version: " + Application.ProductVersion, "-----------------------------", c, r, "-----------------------------", "" };
             lw.Write(s);
-            
+
+
+
             if (Directory.Exists(@"Bin"))
             {
                 AppDomain.CurrentDomain.AppendPrivatePath(@"Bin");
@@ -47,7 +58,7 @@ namespace Android_Installer
             }
             else
             {
-                string[] s4 = { "Error - Bin not found!", "-----------------------------", "","Program closed","","" };
+                string[] s4 = { "Error - Bin not found!", "-----------------------------", "", "Program closed", "", "" };
                 lw.Write(s4);
 
                 //MessageBox.Show("Error - Bin not found!");
@@ -55,6 +66,7 @@ namespace Android_Installer
                 M1.ShowDialog();
                 return;
             }
+
         }
     }
 }
